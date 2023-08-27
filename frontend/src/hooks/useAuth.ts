@@ -12,6 +12,7 @@ export const useAuth: UseAuthType = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    console.log(token);
     try {
       if (token) {
         const decodedToken = jwtDecode<Payload>(token);
@@ -21,6 +22,8 @@ export const useAuth: UseAuthType = () => {
         } else {
           setAuthInfo({checked: true, isAuthenticated: true});
         }
+      } else {
+          setAuthInfo({checked: true, isAuthenticated: false})
       }
     } catch (error) {
       setAuthInfo({checked: true, isAuthenticated: false});
