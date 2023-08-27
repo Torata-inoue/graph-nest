@@ -1,11 +1,18 @@
 import './App.css'
 import 'modern-css-reset'
+import SignIn from "./components/SignIn.tsx";
+import SignUp from "./components/SignUp.tsx";
+import Main from "./components/Main.tsx";
+import NotFound from "./components/NotFound.tsx";
 
 function App() {
 
   return (
     <div className="App">
-      <h1>Hello world</h1>
+      <SignIn />
+      <SignUp />
+      <Main />
+      <NotFound />
     </div>
   )
 }
