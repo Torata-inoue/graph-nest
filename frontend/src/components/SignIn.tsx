@@ -96,7 +96,7 @@ const SignIn: React.FC = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              サインイン
             </Button>
             <Grid container>
               <Grid item>
