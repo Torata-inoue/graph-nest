@@ -1,8 +1,12 @@
 import React from "react";
+import Header from "./Header.tsx";
 
 const Main: React.FC = () => {
   return (
-    <div>Main</div>
+    <>
+      <Header />
+      <div>main</div>
+    </>
   )
 }
 
