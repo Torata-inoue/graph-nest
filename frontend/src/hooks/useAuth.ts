@@ -12,7 +12,6 @@ export const useAuth: UseAuthType = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log(token);
     try {
       if (token) {
         const decodedToken = jwtDecode<Payload>(token);
