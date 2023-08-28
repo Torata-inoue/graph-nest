@@ -6,6 +6,9 @@ import {Payload} from "../types/payload.ts";
 import {useQuery} from "@apollo/client";
 import {Task} from "../types/task.ts";
 import {GET_TASKS} from "../queries/taskQueries.ts";
+import Loading from "./Loading.tsx";
+import {Stack} from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const Main: React.FC = () => {
   const token = localStorage.getItem('token');
@@ -15,11 +18,16 @@ const Main: React.FC = () => {
   const {loading, data, error} = useQuery<{getTasks: Task[]}>(GET_TASKS, {
     variables: {userId}
   });
-  console.log(data);
+
+
   return (
     <>
       <Header />
-      <TaskTable />
+      <Stack spacing={4} direction="column" m={8} alignItems="center">
+        {loading && <Loading/>}
+        {error && <Typography color="red">エラーが発生しました</Typography> }
+        {!loading && !error && <TaskTable tasks={data?.getTasks} userId={userId} />}
+      </Stack>
     </>
   )
 }

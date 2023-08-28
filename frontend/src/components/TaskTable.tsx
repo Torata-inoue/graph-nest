@@ -6,23 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import {Task} from "../types/task.ts";
 
-function createData(
-  name: string,
-  dueDate: string,
-  status: string
-) {
-  return { name, dueDate, status };
-}
-
-const rows = [
-  createData('task1', '2023-08-01', 'not-started'),
-  createData('task2', '2023-08-01', 'not-started'),
-  createData('task3', '2023-08-01', 'not-started'),
-  createData('task4', '2023-08-01', 'not-started')
-];
-
-const TaskTable: React.FC = () => {
+type TaskTableProps = {
+  tasks: Task[] | undefined;
+  userId: number;
+};
+const TaskTable: React.FC<TaskTableProps> = ({tasks, userId}) => {
   return (
     <TableContainer component={Paper} sx={{width: '80%', m: 'auto'}}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -35,16 +25,16 @@ const TaskTable: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {tasks?.map((task) => (
             <TableRow
-              key={row.name}
+              key={task.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                {task.name}
               </TableCell>
-              <TableCell align="right">{row.dueDate}</TableCell>
-              <TableCell align="right">{row.status}</TableCell>
+              <TableCell align="right">{task.dueDate}</TableCell>
+              <TableCell align="right">{task.status}</TableCell>
               <TableCell align="right"></TableCell>
             </TableRow>
           ))}
