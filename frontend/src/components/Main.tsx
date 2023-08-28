@@ -9,6 +9,7 @@ import {GET_TASKS} from "../queries/taskQueries.ts";
 import Loading from "./Loading.tsx";
 import {Stack} from "@mui/material";
 import Typography from "@mui/material/Typography";
+import AddTask from "./AddTask.tsx";
 
 const Main: React.FC = () => {
   const token = localStorage.getItem('token');
@@ -26,7 +27,12 @@ const Main: React.FC = () => {
       <Stack spacing={4} direction="column" m={8} alignItems="center">
         {loading && <Loading/>}
         {error && <Typography color="red">エラーが発生しました</Typography> }
-        {!loading && !error && <TaskTable tasks={data?.getTasks} userId={userId} />}
+        {!loading && !error && (
+          <>
+            <AddTask />
+            <TaskTable tasks={data?.getTasks} userId={userId} />
+          </>
+        )}
       </Stack>
     </>
   )
