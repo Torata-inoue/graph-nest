@@ -1,4 +1,4 @@
-import {TaskStatus} from "./taskStatus.ts";
+import { TaskStatus } from "./taskStatus.ts";
 
 export type Task = {
   id: number;
