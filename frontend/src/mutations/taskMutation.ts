@@ -11,3 +11,14 @@ mutation createTask($createTaskInput: CreateTaskInput!) {
   }
 }
 `
+export const UPDATE_TASK = gql`
+mutation updateTask($updateTaskInput: UpdateTaskInput!) {
+  updateTask(updateTaskInput: $updateTaskInput) {
+    id
+    name
+    status
+    dueDate
+    description
+  }
+}
+`

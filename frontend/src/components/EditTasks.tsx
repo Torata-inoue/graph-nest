@@ -9,6 +9,10 @@ import {FormControl, IconButton, InputLabel, MenuItem, Select, Tooltip} from "@m
 import EditIcon from "@mui/icons-material/Edit";
 import {Task} from "../types/task.ts";
 import {TaskStatus} from "../types/taskStatus.ts";
+import {useMutation} from "@apollo/client";
+import {UPDATE_TASK} from "../mutations/taskMutation.ts";
+import {GET_TASKS} from "../queries/taskQueries.ts";
+import {useNavigate} from "react-router-dom";
 
 type EditTaskProps = {task: Task, userId: number};
 const EditTask: React.FC<EditTaskProps> = ({task, userId}) => {
@@ -19,12 +23,71 @@ const EditTask: React.FC<EditTaskProps> = ({task, userId}) => {
   const [description, setDescription] = useState(task.description);
   const [isInValidName, setIsInvalidName] = useState(false);
   const [isInValidDueDate, setIsInvalidDueDate] = useState(false);
+  const [updateTask] = useMutation<{updateTask: Task}>(UPDATE_TASK);
+  const navigate = useNavigate();
+
+  const resetState = () => {
+    setName(task.name);
+    setDueDate(task.dueDate);
+    setStatus(task.status);
+    setDescription(task.description);
+    setIsInvalidDueDate(false);
+    setIsInvalidName(false);
+  };
+
+  const handleEditTask = async () => {
+    let canEdit = true;
+
+    if (name.length === 0) {
+      canEdit = false;
+      setIsInvalidName(true);
+    } else {
+      canEdit = true;
+      setIsInvalidName(false);
+    }
+
+    if (!Date.parse(dueDate)) {
+      canEdit = false;
+      setIsInvalidDueDate(true);
+    } else {
+      canEdit = true;
+      setIsInvalidDueDate(false);
+    }
+
+    if (canEdit) {
+      const updateTaskInput = {
+        id: task.id,
+        name,
+        dueDate,
+        status,
+        description,
+      };
+      try {
+        await updateTask({
+          variables: {updateTaskInput},
+          refetchQueries: [{query: GET_TASKS, variables: {userId}}]
+        });
+        resetState();
+        setOpen(false);
+      } catch (error: any) {
+        if (error.message === 'Unauthorized') {
+          localStorage.removeItem('token');
+          alert('トークンの有効期限が切れました。サインイン画面に遷移します');
+          navigate('/signin');
+          return;
+        }
+        alert('タスクの編集に失敗しました');
+      }
+    }
+  }
 
   const handleClickOpen = () => {
+    resetState();
     setOpen(true);
   };
 
   const handleClose = () => {
+    resetState();
     setOpen(false);
   };
 
@@ -88,7 +151,7 @@ const EditTask: React.FC<EditTaskProps> = ({task, userId}) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
+          <Button onClick={handleEditTask}>更新</Button>
         </DialogActions>
       </Dialog>
     </div>

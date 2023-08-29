@@ -67,7 +67,6 @@ const AddTask: React.FC<AddTaskProps> = ({userId}) => {
           navigate('/signin');
           return;
         }
-        console.log(error)
         alert('タスクの登録に失敗しました');
       }
     }
