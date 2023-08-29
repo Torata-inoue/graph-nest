@@ -13,7 +13,6 @@ import {useNavigate} from "react-router-dom";
 
 type AddTaskProps = {userId: number};
 const AddTask: React.FC<AddTaskProps> = ({userId}) => {
-  console.log(userId)
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [dueDate, setDueDate] = useState('');

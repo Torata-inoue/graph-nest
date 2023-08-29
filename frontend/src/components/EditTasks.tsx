@@ -94,7 +94,9 @@ const EditTask: React.FC<EditTaskProps> = ({task, userId}) => {
   return (
     <div>
       <Tooltip title="編集">
-        <IconButton onClick={handleClickOpen}><EditIcon></EditIcon></IconButton>
+        <IconButton onClick={handleClickOpen}>
+          <EditIcon />
+        </IconButton>
       </Tooltip>
       <Dialog fullWidth={true} maxWidth="sm" open={open} onClose={handleClose}>
         <DialogTitle>タスク編集</DialogTitle>
