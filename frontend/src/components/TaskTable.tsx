@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {Task} from "../types/task.ts";
+import EditTask from "./EditTasks.tsx";
 
 type TaskTableProps = {
   tasks: Task[] | undefined;
@@ -35,7 +36,9 @@ const TaskTable: React.FC<TaskTableProps> = ({tasks, userId}) => {
               </TableCell>
               <TableCell align="right">{task.dueDate}</TableCell>
               <TableCell align="right">{task.status}</TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="right">
+                <EditTask task={task} userId={userId} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
