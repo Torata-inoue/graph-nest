@@ -6,9 +6,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import {useMutation} from "@apollo/client";
-import {Task} from "../types/task.ts";
-import {CREATE_TASK} from "../mutations/taskMutation.ts";
-import {GET_TASKS} from "../queries/taskQueries.ts";
+import {Task} from "../../../types/task.ts";
+import {CREATE_TASK} from "../../../mutations/taskMutation.ts";
+import {GET_TASKS} from "../../../queries/taskQueries.ts";
 import {useNavigate} from "react-router-dom";
 
 type AddTaskProps = {userId: number};

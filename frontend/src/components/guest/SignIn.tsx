@@ -12,8 +12,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useState} from "react";
 import {useMutation} from "@apollo/client";
-import {SignInResponse} from "../types/signInResponse.ts";
-import {SIGN_IN} from "../mutations/authMutations.ts";
+import {SignInResponse} from "../../types/signInResponse.ts";
+import {SIGN_IN} from "../../mutations/authMutations.ts";
 import {useNavigate} from "react-router-dom";
 
 const theme = createTheme();

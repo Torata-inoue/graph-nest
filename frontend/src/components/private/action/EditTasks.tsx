@@ -7,11 +7,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import {FormControl, IconButton, InputLabel, MenuItem, Select, Tooltip} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import {Task} from "../types/task.ts";
-import {TaskStatus} from "../types/taskStatus.ts";
+import {Task} from "../../../types/task.ts";
+import {TaskStatus} from "../../../types/taskStatus.ts";
 import {useMutation} from "@apollo/client";
-import {UPDATE_TASK} from "../mutations/taskMutation.ts";
-import {GET_TASKS} from "../queries/taskQueries.ts";
+import {UPDATE_TASK} from "../../../mutations/taskMutation.ts";
+import {GET_TASKS} from "../../../queries/taskQueries.ts";
 import {useNavigate} from "react-router-dom";
 
 type EditTaskProps = {task: Task, userId: number};

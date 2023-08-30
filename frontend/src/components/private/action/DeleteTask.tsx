@@ -2,8 +2,8 @@ import React from "react";
 import {IconButton, Tooltip} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useMutation} from "@apollo/client";
-import {DELETE_TASK} from "../mutations/taskMutation.ts";
-import {GET_TASKS} from "../queries/taskQueries.ts";
+import {DELETE_TASK} from "../../../mutations/taskMutation.ts";
+import {GET_TASKS} from "../../../queries/taskQueries.ts";
 import {useNavigate} from "react-router-dom";
 
 type DeleteTaskProps = {id: number; userId: number};

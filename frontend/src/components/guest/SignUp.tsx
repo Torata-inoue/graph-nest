@@ -12,9 +12,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useState} from "react";
 import {useMutation} from "@apollo/client";
-import {User} from "../types/user.ts";
-import {SIGN_IN, SIGN_UP} from "../mutations/authMutations.ts";
-import {SignInResponse} from "../types/signInResponse.ts";
+import {User} from "../../types/user.ts";
+import {SIGN_IN, SIGN_UP} from "../../mutations/authMutations.ts";
+import {SignInResponse} from "../../types/signInResponse.ts";
 import {useNavigate} from "react-router-dom";
 
 const theme = createTheme();

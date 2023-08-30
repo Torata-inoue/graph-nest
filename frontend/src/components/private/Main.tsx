@@ -2,14 +2,14 @@ import React from "react";
 import Header from "./Header.tsx";
 import TaskTable from "./TaskTable.tsx";
 import jwtDecode from "jwt-decode";
-import {Payload} from "../types/payload.ts";
+import {Payload} from "../../types/payload.ts";
 import {useQuery} from "@apollo/client";
-import {Task} from "../types/task.ts";
-import {GET_TASKS} from "../queries/taskQueries.ts";
+import {Task} from "../../types/task.ts";
+import {GET_TASKS} from "../../queries/taskQueries.ts";
 import Loading from "./Loading.tsx";
 import {Stack} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import AddTask from "./AddTask.tsx";
+import AddTask from "./action/AddTask.tsx";
 
 const Main: React.FC = () => {
   const token = localStorage.getItem('token');

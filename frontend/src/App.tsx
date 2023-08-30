@@ -1,13 +1,14 @@
 import './App.css'
 import 'modern-css-reset'
-import SignIn from "./components/SignIn.tsx";
-import SignUp from "./components/SignUp.tsx";
-import Main from "./components/Main.tsx";
+
 import NotFound from "./components/NotFound.tsx";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {GuestRoute, PrivateRoute} from "./AppRoute.tsx";
 import client from "./apolloClient.ts";
 import {ApolloProvider} from "@apollo/client";
+import SignIn from "./components/guest/SignIn.tsx";
+import SignUp from "./components/guest/SignUp.tsx";
+import Main from "./components/private/Main.tsx";
 
 function App() {
 
