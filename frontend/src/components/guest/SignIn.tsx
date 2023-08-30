@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,27 +10,23 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useState} from "react";
 import {useMutation} from "@apollo/client";
 import {SignInResponse} from "../../types/signInResponse.ts";
 import {SIGN_IN} from "../../mutations/authMutations.ts";
 import {useNavigate} from "react-router-dom";
+import {useSignIn} from "../../hooks/guest/useSignIn.ts";
 
 const theme = createTheme();
 
 const SignIn: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [failSignIn, setFailSignIn] = useState(false);
+  const {register, formState: {errors}, handleSubmit} = useSignIn();
   const [signIn] = useMutation<SignInResponse>(SIGN_IN);
   const navigate = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const signInInput = {email, password};
+  const onSubmit = handleSubmit(async (data) => {
     try {
       const result = await signIn({
-        variables: {signInInput}
+        variables: {signInInput: data}
       });
       if (result.data) {
         localStorage.setItem('token', result.data.signIn.accessToken);
@@ -38,13 +34,13 @@ const SignIn: React.FC = () => {
       localStorage.getItem('token') && navigate('/');
     } catch (error: any) {
       if (error.message === 'Unauthorized') {
-        setFailSignIn(true);
+        alert('ログインに失敗しました。emailとpasswordを確認してください')
         return;
       }
       console.log(error.message);
       alert('予期せぬエラーが発生しました。')
     }
-  };
+  })
 
   return (
     <ThemeProvider theme={theme}>
@@ -64,32 +60,26 @@ const SignIn: React.FC = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
               label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={e => setEmail(e.target.value)}
+              {...register('email', {
+                required: true
+              })}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
               type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              {...register('password', {
+                required: true
+              })}
             />
-            {failSignIn && <Typography color="red">メールアドレスまたはパスワードを確認してください</Typography> }
+            {(errors.email || errors.password) && <Typography color="red">メールアドレスまたはパスワードを確認してください</Typography> }
             <Button
               type="submit"
               fullWidth
