@@ -10,36 +10,28 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useMutation} from "@apollo/client";
 import {SignInResponse} from "../../types/signInResponse.ts";
 import {SIGN_IN} from "../../mutations/authMutations.ts";
 import {useNavigate} from "react-router-dom";
 import {useSignIn} from "../../hooks/guest/useSignIn.ts";
+import {useMutationApi} from "../../hooks/useMutationApi.ts";
 
 const theme = createTheme();
 
 const SignIn: React.FC = () => {
   const {register, formState: {errors}, handleSubmit} = useSignIn();
-  const [signIn] = useMutation<SignInResponse>(SIGN_IN);
+  const signIn = useMutationApi<SignInResponse>(SIGN_IN);
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      const result = await signIn({
-        variables: {signInInput: data}
-      });
-      if (result.data) {
-        localStorage.setItem('token', result.data.signIn.accessToken);
-      }
-      localStorage.getItem('token') && navigate('/');
-    } catch (error: any) {
-      if (error.message === 'Unauthorized') {
-        alert('ログインに失敗しました。emailとpasswordを確認してください')
-        return;
-      }
-      console.log(error.message);
-      alert('予期せぬエラーが発生しました。')
+    const result = await signIn({signInInput: data});
+    if (result === undefined) {
+      return;
     }
+    if (result.data) {
+      localStorage.setItem('token', result.data.signIn.accessToken);
+    }
+    localStorage.getItem('token') && navigate('/');
   })
 
   return (
@@ -75,6 +67,7 @@ const SignIn: React.FC = () => {
               required
               fullWidth
               type="password"
+              label="Password"
               {...register('password', {
                 required: true
               })}
