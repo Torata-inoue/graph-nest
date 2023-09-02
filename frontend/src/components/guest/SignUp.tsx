@@ -21,8 +21,8 @@ const theme = createTheme();
 
 const SignUp: React.FC = () => {
   const {register, formState: {errors}, handleSubmit} = useSignUp();
-  const signUp = useMutationApi<{createUser: User}>(SIGN_UP);
-  const signIn = useMutationApi<SignInResponse>(SIGN_IN);
+  const signUp = useMutationApi<{createUser: User}>(SIGN_UP, false);
+  const signIn = useMutationApi<SignInResponse>(SIGN_IN, false);
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {

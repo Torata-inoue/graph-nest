@@ -5,14 +5,17 @@ import {
   OperationVariables,
   useMutation,
 } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 
 export function useMutationApi<TResponse>(
   mutation: DocumentNode,
+  redirectSignIn: boolean = true,
 ): (
   variables: OperationVariables,
   refetchQueries?: InternalRefetchQueriesInclude,
 ) => Promise<FetchResult<TResponse>> | undefined {
   const [gql] = useMutation<TResponse>(mutation);
+  const navigate = useNavigate();
 
   return (variables, refetchQueries) => {
     try {
@@ -25,6 +28,11 @@ export function useMutationApi<TResponse>(
       // @ts-ignore
     } catch (error: never) {
       if (error.message === "Unauthorized") {
+        if (redirectSignIn) {
+          alert("ログイントークンが切れました。再度ログインしてください");
+          navigate("/signIn");
+          return;
+        }
         alert("ログインに失敗しました。emailとpasswordを確認してください");
         return;
       }
