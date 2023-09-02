@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,46 +10,38 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useState} from "react";
-import {useMutation} from "@apollo/client";
 import {User} from "../../types/user.ts";
 import {SIGN_IN, SIGN_UP} from "../../mutations/authMutations.ts";
 import {SignInResponse} from "../../types/signInResponse.ts";
 import {useNavigate} from "react-router-dom";
+import {useSignUp} from "../../hooks/guest/useSignUp.ts";
+import {useMutationApi} from "../../hooks/useMutationApi.ts";
 
 const theme = createTheme();
 
 const SignUp: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [signUp] = useMutation<{createUser: User}>(SIGN_UP);
-  const [signIn] = useMutation<SignInResponse>(SIGN_IN);
+  const {register, formState: {errors}, handleSubmit} = useSignUp();
+  const signUp = useMutationApi<{createUser: User}>(SIGN_UP);
+  const signIn = useMutationApi<SignInResponse>(SIGN_IN);
   const navigate = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const signUpInput = {name, email, password};
-
-    try {
-      const result = await signUp({
-        variables: {createUserInput: signUpInput}
-      });
-      if (result.data?.createUser) {
-        const signInInput = {email, password};
-        const result = await signIn({
-          variables: {signInInput}
-        });
-        if (result.data) {
-          localStorage.setItem('token', result.data.signIn.accessToken);
-        }
-        localStorage.getItem('token') && navigate('/');
-      }
-    } catch (error: any) {
-      alert('ユーザーの作成に失敗しました。')
+  const onSubmit = handleSubmit(async (data) => {
+    const result = await signUp({createUserInput: data});
+    if (result === undefined) {
       return;
     }
-  };
+    if (result.data?.createUser) {
+      const signInInput = {email: data.email, password: data.password};
+      const result = await signIn({signInInput});
+      if (result === undefined) {
+        return;
+      }
+      if (result.data) {
+        localStorage.setItem('token', result.data.signIn.accessToken);
+      }
+      localStorage.getItem('token') && navigate('/');
+    }
+  })
 
   return (
     <ThemeProvider theme={theme}>
@@ -69,44 +61,44 @@ const SignUp: React.FC = () => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="name"
-                  name="name"
                   required
                   fullWidth
-                  id="name"
                   label="Name"
-                  autoFocus
-                  value={name}
-                  onChange={e => setName(e.target.value)}
+                  error={Boolean(errors.name)}
+                  helperText={errors.name?.message}
+                  {...register('name', {
+                    required: {value: true, message: '名前を入力してください'}
+                  })}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="email"
                   label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  error={Boolean(errors.email)}
+                  helperText={errors.email?.message}
+                  {...register('email', {
+                    required: {value: true, message: 'メールアドレスを入力してください'}
+                  })}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
                   label="Password"
                   type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
+                  error={Boolean(errors.password)}
+                  helperText={errors.password?.message}
+                  {...register('password', {
+                    required: {value: true, message: 'パスワードを入力してください'}
+                  })}
                 />
               </Grid>
             </Grid>
