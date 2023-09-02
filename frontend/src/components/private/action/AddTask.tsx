@@ -8,7 +8,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {Task} from "../../../types/task.ts";
 import {CREATE_TASK} from "../../../mutations/taskMutation.ts";
 import {GET_TASKS} from "../../../queries/taskQueries.ts";
-import {useNavigate} from "react-router-dom";
 import {useAddTask} from "../../../hooks/private/useAddTask.ts";
 import {useMutationApi} from "../../../hooks/useMutationApi.ts";
 import Box from "@mui/material/Box";
@@ -18,7 +17,6 @@ const AddTask: React.FC<AddTaskProps> = ({userId}) => {
   const [open, setOpen] = useState(false);
   const {register, reset, formState: {errors}, handleSubmit} = useAddTask(userId);
   const createTask = useMutationApi<{createTask: Task}>(CREATE_TASK);
-  const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {
     await createTask({createTaskInput: data}, [{query: GET_TASKS, variables: {userId}}]);
