@@ -1,19 +1,24 @@
 import {
   DocumentNode,
   FetchResult,
+  InternalRefetchQueriesInclude,
   OperationVariables,
   useMutation,
 } from "@apollo/client";
 
 export function useMutationApi<TResponse>(
   mutation: DocumentNode,
-): (input: OperationVariables) => Promise<FetchResult<TResponse>> | undefined {
+): (
+  variables: OperationVariables,
+  refetchQueries?: InternalRefetchQueriesInclude,
+) => Promise<FetchResult<TResponse>> | undefined {
   const [gql] = useMutation<TResponse>(mutation);
 
-  return (input: OperationVariables) => {
+  return (variables, refetchQueries) => {
     try {
       return gql({
-        variables: input,
+        variables,
+        refetchQueries,
       });
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
