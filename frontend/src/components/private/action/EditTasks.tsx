@@ -8,86 +8,33 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {FormControl, IconButton, InputLabel, MenuItem, Select, Tooltip} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import {Task} from "../../../types/task.ts";
-import {TaskStatus} from "../../../types/taskStatus.ts";
-import {useMutation} from "@apollo/client";
 import {UPDATE_TASK} from "../../../mutations/taskMutation.ts";
 import {GET_TASKS} from "../../../queries/taskQueries.ts";
-import {useNavigate} from "react-router-dom";
+import {useEditTask} from "../../../hooks/private/useEditTask.ts";
+import {useMutationApi} from "../../../hooks/useMutationApi.ts";
+import Box from "@mui/material/Box";
+import {Controller} from "react-hook-form";
 
 type EditTaskProps = {task: Task, userId: number};
 const EditTask: React.FC<EditTaskProps> = ({task, userId}) => {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState(task.name);
-  const [dueDate, setDueDate] = useState(task.dueDate);
-  const [status, setStatus] = useState(task.status);
-  const [description, setDescription] = useState(task.description);
-  const [isInValidName, setIsInvalidName] = useState(false);
-  const [isInValidDueDate, setIsInvalidDueDate] = useState(false);
-  const [updateTask] = useMutation<{updateTask: Task}>(UPDATE_TASK);
-  const navigate = useNavigate();
+  const {register, reset, formState: {errors}, handleSubmit, control} = useEditTask(task);
+  const updateTask = useMutationApi<{updateTask: Task}>(UPDATE_TASK);
 
-  const resetState = () => {
-    setName(task.name);
-    setDueDate(task.dueDate);
-    setStatus(task.status);
-    setDescription(task.description);
-    setIsInvalidDueDate(false);
-    setIsInvalidName(false);
-  };
-
-  const handleEditTask = async () => {
-    let canEdit = true;
-
-    if (name.length === 0) {
-      canEdit = false;
-      setIsInvalidName(true);
-    } else {
-      canEdit = true;
-      setIsInvalidName(false);
-    }
-
-    if (!Date.parse(dueDate)) {
-      canEdit = false;
-      setIsInvalidDueDate(true);
-    } else {
-      canEdit = true;
-      setIsInvalidDueDate(false);
-    }
-
-    if (canEdit) {
-      const updateTaskInput = {
-        id: task.id,
-        name,
-        dueDate,
-        status,
-        description,
-      };
-      try {
-        await updateTask({
-          variables: {updateTaskInput},
-          refetchQueries: [{query: GET_TASKS, variables: {userId}}]
-        });
-        resetState();
-        setOpen(false);
-      } catch (error: any) {
-        if (error.message === 'Unauthorized') {
-          localStorage.removeItem('token');
-          alert('トークンの有効期限が切れました。サインイン画面に遷移します');
-          navigate('/signin');
-          return;
-        }
-        alert('タスクの編集に失敗しました');
-      }
-    }
+  const handleReset = () => {
+    reset();
   }
 
+  const onSubmit = handleSubmit(async (data) => {
+    await updateTask({updateTaskInput: data},[{query: GET_TASKS, variables: {userId}}]);
+    setOpen(false);
+  })
+
   const handleClickOpen = () => {
-    resetState();
     setOpen(true);
   };
 
   const handleClose = () => {
-    resetState();
     setOpen(false);
   };
 
@@ -99,62 +46,71 @@ const EditTask: React.FC<EditTaskProps> = ({task, userId}) => {
         </IconButton>
       </Tooltip>
       <Dialog fullWidth={true} maxWidth="sm" open={open} onClose={handleClose}>
-        <DialogTitle>タスク編集</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="normal"
-            id="name"
-            label="Task Name"
-            fullWidth
-            required
-            value={name}
-            onChange={e => setName(e.target.value)}
-            error={isInValidName}
-            helperText={isInValidName && 'タスク名を入力してください'}
-          />
-          <TextField
-            autoFocus
-            margin="normal"
-            id="dueDate"
-            label="YYYY-MM-DD"
-            fullWidth
-            required
-            value={dueDate}
-            onChange={e => setDueDate(e.target.value)}
-            error={isInValidDueDate}
-            helperText={isInValidDueDate && '日付形式で入力してください'}
-          />
-          <FormControl fullWidth={true} margin="normal">
-            <InputLabel id="task-status-label">ステータス</InputLabel>
-            <Select
-              labelId="task-status-label"
-              id="task-status"
-              label="Status"
-              value={status}
-              onChange={e => setStatus(e.target.value as TaskStatus)}
-            >
-              <MenuItem value="NOT_STARTED">Not Started</MenuItem>
-              <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
-              <MenuItem value="COMPLETED">Complete</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            autoFocus
-            margin="normal"
-            id="description"
-            label="description"
-            fullWidth
-            multiline
-            rows={4}
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleEditTask}>更新</Button>
-        </DialogActions>
+        <Box component="form" onSubmit={onSubmit}>
+          <DialogTitle>タスク編集</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="normal"
+              id="name"
+              label="Task Name"
+              fullWidth
+              required
+              error={Boolean(errors.name)}
+              helperText={errors.name?.message}
+              {...register('name', {
+                required: {value: true, message: '名前を入力してください'}
+              })}
+            />
+            <TextField
+              autoFocus
+              margin="normal"
+              id="dueDate"
+              label="YYYY-MM-DD"
+              fullWidth
+              required
+              error={Boolean(errors.dueDate)}
+              helperText={errors.dueDate?.message}
+              {...register('dueDate', {
+                required: {value: true, message: '日付を入力して下さい'}
+              })}
+            />
+            <FormControl fullWidth={true} margin="normal">
+              <InputLabel id="task-status-label">ステータス</InputLabel>
+              <Controller
+                name="status"
+                control={control}
+                render={({field}) => (
+                  <Select
+                    labelId="task-status-label"
+                    id="task-status"
+                    label="Status"
+                    {...field}
+                  >
+                    <MenuItem value="NOT_STARTED">Not Started</MenuItem>
+                    <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
+                    <MenuItem value="COMPLETED">Complete</MenuItem>
+                  </Select>
+                )}
+              />
+            </FormControl>
+            <TextField
+              autoFocus
+              margin="normal"
+              id="description"
+              label="description"
+              fullWidth
+              multiline
+              rows={4}
+              {...register('description')}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleReset}>元に戻す</Button>
+            <Button type="submit">送信</Button>
+          </DialogActions>
+        </Box>
       </Dialog>
     </div>
   );
