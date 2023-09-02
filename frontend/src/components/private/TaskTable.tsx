@@ -6,9 +6,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {Task} from "../types/task.ts";
-import EditTask from "./EditTasks.tsx";
-import DeleteTask from "./DeleteTask.tsx";
+import {Task} from "../../types/task.ts";
+import EditTask from "./action/EditTasks.tsx";
+import DeleteTask from "./action/DeleteTask.tsx";
 import {Stack} from "@mui/material";
 
 type TaskTableProps = {
@@ -41,7 +41,7 @@ const TaskTable: React.FC<TaskTableProps> = ({tasks, userId}) => {
               <TableCell align="right">
                 <Stack spacing={2} direction="row" justifyContent="flex-end">
                   <EditTask task={task} userId={userId} />
-                  <DeleteTask id={task.id} userId={userId} />
+                  <DeleteTask task={task} userId={userId} />
                 </Stack>
               </TableCell>
             </TableRow>
