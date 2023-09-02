@@ -20,7 +20,6 @@ const Main: React.FC = () => {
     variables: {userId}
   });
 
-
   return (
     <>
       <Header />
