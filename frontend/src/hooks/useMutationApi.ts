@@ -30,6 +30,7 @@ export function useMutationApi<TResponse>(
       if (error.message === "Unauthorized") {
         if (redirectSignIn) {
           alert("ログイントークンが切れました。再度ログインしてください");
+          localStorage.removeItem("token");
           navigate("/signIn");
           return;
         }

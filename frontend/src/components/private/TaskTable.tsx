@@ -41,7 +41,7 @@ const TaskTable: React.FC<TaskTableProps> = ({tasks, userId}) => {
               <TableCell align="right">
                 <Stack spacing={2} direction="row" justifyContent="flex-end">
                   <EditTask task={task} userId={userId} />
-                  <DeleteTask id={task.id} userId={userId} />
+                  <DeleteTask task={task} userId={userId} />
                 </Stack>
               </TableCell>
             </TableRow>
