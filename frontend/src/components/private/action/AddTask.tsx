@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -11,6 +10,8 @@ import {GET_TASKS} from "../../../queries/taskQueries.ts";
 import {useAddTask} from "../../../hooks/private/useAddTask.ts";
 import {useMutationApi} from "../../../hooks/useMutationApi.ts";
 import Box from "@mui/material/Box";
+import InlineTextInput from "../../inputs/InlineTextInput.tsx";
+import MultilineInput from "../../inputs/MultilineInput.tsx";
 
 type AddTaskProps = {userId: number};
 const AddTask: React.FC<AddTaskProps> = ({userId}) => {
@@ -42,42 +43,13 @@ const AddTask: React.FC<AddTaskProps> = ({userId}) => {
         <Box component="form" onSubmit={onSubmit}>
           <DialogTitle>タスク追加</DialogTitle>
           <DialogContent>
-            <TextField
-              autoFocus
-              margin="normal"
-              id="name"
-              label="Task Name"
-              fullWidth
-              required
-              error={Boolean(errors.name)}
-              helperText={errors.name?.message}
-              {...register('name', {
-                required: {value: true, message: 'タスク名を入力してください'}
-              })}
-            />
-            <TextField
-              autoFocus
-              margin="normal"
-              id="dueDate"
-              label="YYYY-MM-DD"
-              fullWidth
-              required
-              error={Boolean(errors.dueDate)}
-              helperText={errors.dueDate?.message}
-              {...register('dueDate', {
-                required: {value: true, message: '日付を入力してください'}
-              })}
-            />
-            <TextField
-              autoFocus
-              margin="normal"
-              id="description"
-              label="description"
-              fullWidth
-              multiline
-              rows={4}
-              {...register('description')}
-            />
+            <InlineTextInput placeholder="Task Name" error={errors.name} register={register('name', {
+              required: {value: true, message: 'タスク名を入力してください'}
+            })}/>
+            <InlineTextInput placeholder="YYYY-MM-DD" error={errors.dueDate} register={register('dueDate', {
+              required: {value: true, message: '日付を入力してください'}
+            })}/>
+            <MultilineInput placeholder="description" register={register('description')} />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>

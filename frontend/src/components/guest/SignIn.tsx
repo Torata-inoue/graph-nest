@@ -2,7 +2,6 @@ import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,6 +14,7 @@ import {SIGN_IN} from "../../mutations/authMutations.ts";
 import {useNavigate} from "react-router-dom";
 import {useSignIn} from "../../hooks/guest/useSignIn.ts";
 import {useMutationApi} from "../../hooks/useMutationApi.ts";
+import InlineTextInput from "../inputs/InlineTextInput.tsx";
 
 const theme = createTheme();
 
@@ -53,26 +53,12 @@ const SignIn: React.FC = () => {
             Sign in
           </Typography>
           <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Email Address"
-              {...register('email', {
-                required: true
-              })}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              type="password"
-              label="Password"
-              {...register('password', {
-                required: true
-              })}
-            />
-            {(errors.email || errors.password) && <Typography color="red">メールアドレスまたはパスワードを確認してください</Typography> }
+            <InlineTextInput placeholder="Email Address" error={errors.email} register={register('email', {
+              required: {value: true, message: 'メールアドレスを入力してください'}
+            })} />
+            <InlineTextInput placeholder="Password" error={errors.password} type="password" register={register('password', {
+              required: {value: true, message: 'パスワードを入力して下さい'}
+            })} />
             <Button
               type="submit"
               fullWidth

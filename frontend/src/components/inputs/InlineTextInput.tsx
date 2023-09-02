@@ -1,13 +1,14 @@
-import React from "react";
+import React, {HTMLInputTypeAttribute} from "react";
 import TextField from "@mui/material/TextField";
 import {FieldError, UseFormRegisterReturn} from "react-hook-form";
 
 type InlineTextInputProps = {
   placeholder: string;
   error: FieldError | undefined;
-  register: UseFormRegisterReturn
+  register: UseFormRegisterReturn;
+  type?: HTMLInputTypeAttribute;
 }
-const InlineTextInput: React.FC<InlineTextInputProps> = ({placeholder, error, register}) => {
+const InlineTextInput: React.FC<InlineTextInputProps> = ({placeholder, error, register, type = 'text'}) => {
   return (
     <TextField
       autoFocus
@@ -17,6 +18,7 @@ const InlineTextInput: React.FC<InlineTextInputProps> = ({placeholder, error, re
       required
       error={Boolean(error)}
       helperText={error?.message}
+      type={type}
       {...register}
     />
   )

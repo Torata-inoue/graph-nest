@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import {FormControl, IconButton, InputLabel, MenuItem, Select, Tooltip} from "@mui/material";
+import {IconButton, MenuItem, Tooltip} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import {Task} from "../../../types/task.ts";
 import {UPDATE_TASK} from "../../../mutations/taskMutation.ts";
@@ -13,7 +12,9 @@ import {GET_TASKS} from "../../../queries/taskQueries.ts";
 import {useEditTask} from "../../../hooks/private/useEditTask.ts";
 import {useMutationApi} from "../../../hooks/useMutationApi.ts";
 import Box from "@mui/material/Box";
-import {Controller} from "react-hook-form";
+import InlineTextInput from "../../inputs/InlineTextInput.tsx";
+import MultilineInput from "../../inputs/MultilineInput.tsx";
+import SelectInput from "../../inputs/SelectInput.tsx";
 
 type EditTaskProps = {task: Task, userId: number};
 const EditTask: React.FC<EditTaskProps> = ({task, userId}) => {
@@ -49,61 +50,18 @@ const EditTask: React.FC<EditTaskProps> = ({task, userId}) => {
         <Box component="form" onSubmit={onSubmit}>
           <DialogTitle>タスク編集</DialogTitle>
           <DialogContent>
-            <TextField
-              autoFocus
-              margin="normal"
-              id="name"
-              label="Task Name"
-              fullWidth
-              required
-              error={Boolean(errors.name)}
-              helperText={errors.name?.message}
-              {...register('name', {
-                required: {value: true, message: '名前を入力してください'}
-              })}
-            />
-            <TextField
-              autoFocus
-              margin="normal"
-              id="dueDate"
-              label="YYYY-MM-DD"
-              fullWidth
-              required
-              error={Boolean(errors.dueDate)}
-              helperText={errors.dueDate?.message}
-              {...register('dueDate', {
-                required: {value: true, message: '日付を入力して下さい'}
-              })}
-            />
-            <FormControl fullWidth={true} margin="normal">
-              <InputLabel id="task-status-label">ステータス</InputLabel>
-              <Controller
-                name="status"
-                control={control}
-                render={({field}) => (
-                  <Select
-                    labelId="task-status-label"
-                    id="task-status"
-                    label="Status"
-                    {...field}
-                  >
-                    <MenuItem value="NOT_STARTED">Not Started</MenuItem>
-                    <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
-                    <MenuItem value="COMPLETED">Complete</MenuItem>
-                  </Select>
-                )}
-              />
-            </FormControl>
-            <TextField
-              autoFocus
-              margin="normal"
-              id="description"
-              label="description"
-              fullWidth
-              multiline
-              rows={4}
-              {...register('description')}
-            />
+            <InlineTextInput placeholder="Task Name" error={errors.name} register={register('name', {
+              required: {value: true, message: '名前を入力して下さい'}
+            })}/>
+            <InlineTextInput placeholder="YYYY-MM-DD" error={errors.dueDate} register={register('dueDate', {
+              required: {value: true, message: '日付を入力して下さい'}
+            })}/>
+            <SelectInput control={control} placeholder="ステータス">
+              <MenuItem value="NOT_STARTED">Not Started</MenuItem>
+              <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
+              <MenuItem value="COMPLETED">Complete</MenuItem>
+            </SelectInput>
+            <MultilineInput placeholder="description" register={register('description')} />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>

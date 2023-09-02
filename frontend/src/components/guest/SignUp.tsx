@@ -2,7 +2,6 @@ import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -16,6 +15,7 @@ import {SignInResponse} from "../../types/signInResponse.ts";
 import {useNavigate} from "react-router-dom";
 import {useSignUp} from "../../hooks/guest/useSignUp.ts";
 import {useMutationApi} from "../../hooks/useMutationApi.ts";
+import InlineTextInput from "../inputs/InlineTextInput.tsx";
 
 const theme = createTheme();
 
@@ -64,42 +64,19 @@ const SignUp: React.FC = () => {
           <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <TextField
-                  autoComplete="name"
-                  required
-                  fullWidth
-                  label="Name"
-                  error={Boolean(errors.name)}
-                  helperText={errors.name?.message}
-                  {...register('name', {
-                    required: {value: true, message: '名前を入力してください'}
-                  })}
-                />
+                <InlineTextInput placeholder="Name" error={errors.name} register={register('name', {
+                  required: {value: true, message: '名前を入力してください'}
+                })} />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Email Address"
-                  error={Boolean(errors.email)}
-                  helperText={errors.email?.message}
-                  {...register('email', {
-                    required: {value: true, message: 'メールアドレスを入力してください'}
-                  })}
-                />
+                <InlineTextInput placeholder="Email Address" error={errors.email} register={register('email', {
+                  required: {value: true, message: 'メールアドレスを入力してください'}
+                })} />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Password"
-                  type="password"
-                  error={Boolean(errors.password)}
-                  helperText={errors.password?.message}
-                  {...register('password', {
-                    required: {value: true, message: 'パスワードを入力してください'}
-                  })}
-                />
+                <InlineTextInput placeholder="Password" error={errors.password} type="password" register={register('password', {
+                  required: {value: true, message: 'パスワードを入力して下さい'}
+                })} />
               </Grid>
             </Grid>
             <Button
