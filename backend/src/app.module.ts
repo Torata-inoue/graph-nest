@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import * as process from 'process';
+import { SendMessageModule } from './send-message/send-message.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import * as process from 'process';
     PrismaModule,
     UserModule,
     AuthModule,
+    SendMessageModule,
   ],
 })
 export class AppModule {}
