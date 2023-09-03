@@ -1,18 +1,18 @@
 version: '3.8'
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: postgres
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
     ports:
-      - 5432:5432
+      - 33061:3306
     volumes:
-      - ./docker/postgres/init.d:/docker-entrypoint-initdb.d
-      - ./docker/postgres/pgdata:/var/lib/postgresql/data
+      - ./docker/mysql/init.d:/docker-entrypoint-initdb.d
+      - ./docker/mysql/mysql-data:/var/lib/mysql
     environment:
-      POSTGRES_USER: udemy_user
-      POSTGRES_PASSWORD: udemy_pass
-      POSTGRES_INITDB_ARGS: '--encoding=UTF-8'
-      POSTGRES_DB: udemydb
-    hostname: postgres
-    restart: always
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: main_db
+      MYSQL_USER: main_user
+      MYSQL_PASSWORD: main_pass
+    hostname: mysql
     user: root
+
