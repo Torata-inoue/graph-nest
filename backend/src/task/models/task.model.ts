@@ -24,7 +24,7 @@ export class Task {
   dueTime: number;
 
   @Field()
-  isEveryDay: boolean;
+  isEveryday: boolean;
 
   @Field(() => Int, { nullable: true })
   dayOfWeek: number;

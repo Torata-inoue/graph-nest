@@ -5,9 +5,15 @@ export const GET_TASKS = gql`
     getTasks(userId: $userId) {
       id
       name
-      dueDate
-      status
-      description
+      body
+      isTask
+      to
+      dueTime
+      isEveryday
+      dayOfWeek
+      date
+      createdAt
+      updatedAt
     }
   }
 `;
