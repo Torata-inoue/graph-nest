@@ -1,11 +1,5 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import {
-  IsBoolean,
-  IsDateString,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 @InputType()
 export class CreateTaskInput {
@@ -43,4 +37,15 @@ export class CreateTaskInput {
   @Field(() => Int, { nullable: true })
   @IsOptional()
   date?: number;
+
+  @Field(() => Int)
+  roomId: number;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  limitDate?: number;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  limitHour?: number;
 }

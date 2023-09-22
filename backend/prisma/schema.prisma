@@ -22,6 +22,9 @@ model Task {
   isEveryday Boolean
   dayOfWeek Int?
   date Int?
+  roomId Int
+  limitDate Int?
+  limitHour Int?
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)
 

@@ -7,8 +7,11 @@ export type Task = {
   to: string;
   dueTime: number;
   isEveryday: boolean;
-  dayOfWeek: number;
-  date: number;
+  dayOfWeek?: number;
+  date?: number;
+  roomId: number;
+  limitDate?: number;
+  limitHour?: number;
   createdAt: Date;
   updatedAt: Date;
 };

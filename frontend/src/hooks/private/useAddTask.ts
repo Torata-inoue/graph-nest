@@ -10,6 +10,9 @@ type AddTaskInputType = {
   isEveryday: boolean;
   dayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   date?: number;
+  roomId: number;
+  limitDate?: number;
+  limitHour?: number;
 };
 export const useAddTask: (userId: number) => UseFormReturn<AddTaskInputType> = (
   userId,
@@ -22,7 +25,7 @@ export const useAddTask: (userId: number) => UseFormReturn<AddTaskInputType> = (
       isTask: false,
       to: "",
       dueTime: 10,
-      isEveryday: false
+      isEveryday: false,
     },
   });
 };

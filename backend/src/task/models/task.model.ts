@@ -32,6 +32,15 @@ export class Task {
   @Field(() => Int, { nullable: true })
   date: number;
 
+  @Field(() => Int)
+  roomId: number;
+
+  @Field(() => Int, { nullable: true })
+  limitDate: number;
+
+  @Field(() => Int, { nullable: true })
+  limitHour: number;
+
   @Field()
   createdAt: Date;
 

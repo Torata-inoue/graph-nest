@@ -22,6 +22,7 @@ const AddTask: React.FC<AddTaskProps> = ({userId}) => {
   const createTask = useMutationApi<{createTask: Task}>(CREATE_TASK);
 
   const onSubmit = handleSubmit(async (data) => {
+    console.log(data)
     await createTask({createTaskInput: {
       ...data,
       isTask: Boolean(data.isTask),
@@ -53,6 +54,10 @@ const AddTask: React.FC<AddTaskProps> = ({userId}) => {
               required: {value: true, message: 'タスク名を入力してください'}
             })}/>
             <MultilineInput placeholder="本文" register={register('body')} />
+            <InlineTextInput placeholder="ChatworkルームID" error={errors.roomId} register={register('roomId', {
+              required: {value: true, message: 'ChatworkルームIDを入力して下さい'},
+              valueAsNumber: true
+            })} />
             {/*TODO chatworkデータを取得したい*/}
             <MultilineInput placeholder="toで宛先にしたいchatwork idを入力して下さい" register={register('to')} />
             <SelectInput placeholder="タスク or 通常チャット" name="isTask" control={control}>

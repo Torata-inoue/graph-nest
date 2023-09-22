@@ -26,6 +26,9 @@ export class TaskService {
       isEveryday,
       to,
       body,
+      roomId,
+      limitDate,
+      limitHour,
     } = createTaskInput;
     return this.prismaService.task.create({
       data: {
@@ -38,6 +41,9 @@ export class TaskService {
         to,
         body,
         isEveryday,
+        roomId,
+        limitDate,
+        limitHour,
       },
     });
   }
