@@ -18,7 +18,7 @@ model Task {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   isTask Boolean
   to String @db.Text
-  dueTime String @db.VarChar(10)
+  dueTime Int
   isEveryday Boolean
   dayOfWeek Int?
   date Int?
