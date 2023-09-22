@@ -28,7 +28,7 @@ export class CreateTaskInput {
   @IsNotEmpty()
   to: string;
 
-  @Field()
+  @Field(() => Int)
   @IsNumber()
   dueTime: number;
 

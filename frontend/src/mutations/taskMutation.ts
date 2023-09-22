@@ -5,9 +5,16 @@ export const CREATE_TASK = gql`
     createTask(createTaskInput: $createTaskInput) {
       id
       name
-      dueDate
-      description
-      status
+      body
+      isTask
+      userId
+      to
+      dueTime
+      isEveryday
+      dayOfWeek
+      date
+      createdAt
+      updatedAt
     }
   }
 `;
