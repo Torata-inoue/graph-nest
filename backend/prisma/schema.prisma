@@ -13,19 +13,22 @@ datasource db {
 model Task {
   id Int @id @default(autoincrement())
   name String @db.VarChar(255)
-  dueDate String @db.VarChar(10)
-  status Status @default(NOT_STARTED)
-  description String?
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  updatedAt DateTime @updatedAt @db.Timestamp(0)
+  body String @db.Text
   userId Int
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
+  isTask Boolean
+  to String @db.Text
+  dueTime String @db.VarChar(10)
+  isEveryday Boolean
+  dayOfWeek Int?
+  date Int?
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
 
-enum Status {
-  NOT_STARTED
-  IN_PROGRESS
-  COMPLETED
+  @@index([userId, createdAt])
+  @@index([date])
+  @@index([isEveryday])
+  @@index([dayOfWeek])
 }
 
 model User {
