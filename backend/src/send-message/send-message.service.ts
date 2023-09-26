@@ -1,41 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { TaskService } from '../task/task.service';
-import { HttpService } from '@nestjs/axios';
+import { ChatworkService } from '../chatwork/chatwork.service';
 
 @Injectable()
 export class SendMessageService {
   constructor(
     private readonly taskService: TaskService,
-    private readonly httpService: HttpService,
+    private readonly chatworkService: ChatworkService,
   ) {}
 
   // @Cron('* 30 * * * *')
   // @Cron('1 * * * * *')
   async handleCron(): Promise<void> {
-    const now = new Date();
-    const tasks = await this.taskService.getSendTasks(
-      now.getHours(),
-      now.getDay(),
-      now.getDate(),
-    );
+    // const now = new Date();
+    // const tasks = await this.taskService.getSendTasks(
+    //   now.getHours(),
+    //   now.getDay(),
+    //   now.getDate(),
+    // );
+    //
+    // tasks.map((task) => {
+    //   const toIds: number[] = JSON.parse(task.to);
+    //   this.chatworkService.postMessage(task.roomId, toIds, task.body);
+    // });
 
-    const headers = {
-      'X-ChatWorkToken': 'eccbf082087840e4d15c6839fede3a7e',
-    };
-
-    tasks.map(async (task) => {
-      const endpoint = `https://api.chatwork.com/v2/rooms/${task.roomId}/messages`;
-      const toIds = task.to;
-      const body = `body=[To:${toIds}]\n${task.body}`;
-
-      try {
-        const res = await this.httpService
-          .post(endpoint, body, { headers })
-          .toPromise();
-      } catch (error) {
-        console.log(error.response);
-      }
-    });
+    this.chatworkService.getRoomMembers(236136302);
   }
 }

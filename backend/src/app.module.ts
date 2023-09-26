@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import * as process from 'process';
 import { SendMessageModule } from './send-message/send-message.module';
+import { ChatworkModule } from './chatwork/chatwork.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { SendMessageModule } from './send-message/send-message.module';
     UserModule,
     AuthModule,
     SendMessageModule,
+    ChatworkModule,
   ],
 })
 export class AppModule {}
