@@ -15,6 +15,23 @@ export class TaskService {
     });
   }
 
+  async getSendTasks(
+    dueTime: number,
+    dayOfWeek: number,
+    date: number,
+  ): Promise<Task[]> {
+    return this.prismaService.task.findMany({
+      // where: {
+      //   AND: [
+      //     {
+      //       OR: [{ isEveryday: true }, { dayOfWeek }, { date }],
+      //     },
+      //     { dueTime },
+      //   ],
+      // },
+    });
+  }
+
   async createTask(createTaskInput: CreateTaskInput): Promise<Task> {
     const {
       name,

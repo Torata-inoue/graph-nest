@@ -6,17 +6,18 @@ CREATE TABLE `Task` (
     `userId` INTEGER NOT NULL,
     `isTask` BOOLEAN NOT NULL,
     `to` TEXT NOT NULL,
-    `dueTime` VARCHAR(10) NOT NULL,
+    `dueTime` INTEGER NOT NULL,
     `isEveryday` BOOLEAN NOT NULL,
     `dayOfWeek` INTEGER NULL,
     `date` INTEGER NULL,
+    `roomId` INTEGER NOT NULL,
+    `limitDate` INTEGER NULL,
+    `limitHour` INTEGER NULL,
     `createdAt` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updatedAt` TIMESTAMP(0) NOT NULL,
 
     INDEX `Task_userId_createdAt_idx`(`userId`, `createdAt`),
-    INDEX `Task_date_idx`(`date`),
-    INDEX `Task_isEveryday_idx`(`isEveryday`),
-    INDEX `Task_dayOfWeek_idx`(`dayOfWeek`),
+    INDEX `Task_dueTime_idx`(`dueTime`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

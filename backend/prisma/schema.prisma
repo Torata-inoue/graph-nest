@@ -29,9 +29,7 @@ model Task {
   updatedAt DateTime @updatedAt @db.Timestamp(0)
 
   @@index([userId, createdAt])
-  @@index([date])
-  @@index([isEveryday])
-  @@index([dayOfWeek])
+  @@index([dueTime])
 }
 
 model User {
