@@ -2,13 +2,22 @@
 CREATE TABLE `Task` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
-    `dueDate` VARCHAR(10) NOT NULL,
-    `status` ENUM('NOT_STARTED', 'IN_PROGRESS', 'COMPLETED') NOT NULL DEFAULT 'NOT_STARTED',
-    `description` VARCHAR(191) NULL,
+    `body` TEXT NOT NULL,
+    `userId` INTEGER NOT NULL,
+    `isTask` BOOLEAN NOT NULL,
+    `to` TEXT NOT NULL,
+    `dueTime` INTEGER NOT NULL,
+    `isEveryday` BOOLEAN NOT NULL,
+    `dayOfWeek` INTEGER NULL,
+    `date` INTEGER NULL,
+    `roomId` INTEGER NOT NULL,
+    `limitDate` INTEGER NULL,
+    `limitHour` INTEGER NULL,
     `createdAt` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updatedAt` TIMESTAMP(0) NOT NULL,
-    `userId` INTEGER NOT NULL,
 
+    INDEX `Task_userId_createdAt_idx`(`userId`, `createdAt`),
+    INDEX `Task_dueTime_idx`(`dueTime`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

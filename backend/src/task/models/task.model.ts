@@ -1,5 +1,4 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Status } from '@prisma/client';
 
 @ObjectType()
 export class Task {
@@ -10,13 +9,37 @@ export class Task {
   name: string;
 
   @Field()
-  dueDate: string;
+  body: string;
+
+  @Field(() => Int)
+  userId: number;
 
   @Field()
-  status: Status;
+  isTask: boolean;
 
-  @Field({ nullable: true })
-  description: string;
+  @Field()
+  to: string;
+
+  @Field(() => Int)
+  dueTime: number;
+
+  @Field()
+  isEveryday: boolean;
+
+  @Field(() => Int, { nullable: true })
+  dayOfWeek: number;
+
+  @Field(() => Int, { nullable: true })
+  date: number;
+
+  @Field(() => Int)
+  roomId: number;
+
+  @Field(() => Int, { nullable: true })
+  limitDate: number;
+
+  @Field(() => Int, { nullable: true })
+  limitHour: number;
 
   @Field()
   createdAt: Date;

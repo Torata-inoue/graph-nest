@@ -5,17 +5,18 @@ import {Control, Controller} from "react-hook-form";
 type SelectInputProps = {
   placeholder: string;
   control: Control<any, any>;
+  name: string;
   children: React.ReactNode[];
 }
-const SelectInput: React.FC<SelectInputProps> = ({placeholder, control, children}) => {
+const SelectInput: React.FC<SelectInputProps> = ({placeholder, control, name, children}) => {
   return (
     <FormControl fullWidth={true} margin="normal">
       <InputLabel>{placeholder}</InputLabel>
       <Controller
-        name="status"
+        name={name}
         control={control}
         render={({field}) => (
-          <Select {...field}>
+          <Select {...field} >
             {children}
           </Select>
         )}

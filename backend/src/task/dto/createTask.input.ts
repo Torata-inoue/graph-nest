@@ -1,5 +1,5 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsDateString, IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 @InputType()
 export class CreateTaskInput {
@@ -8,12 +8,44 @@ export class CreateTaskInput {
   name: string;
 
   @Field()
-  @IsDateString()
-  dueDate: string;
-
-  @Field({ nullable: true })
-  description?: string;
+  @IsNotEmpty()
+  body: string;
 
   @Field(() => Int)
   userId: number;
+
+  @Field()
+  @IsBoolean()
+  isTask: boolean;
+
+  @Field()
+  @IsNotEmpty()
+  to: string;
+
+  @Field(() => Int)
+  @IsNumber()
+  dueTime: number;
+
+  @Field()
+  @IsBoolean()
+  isEveryday: boolean;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  dayOfWeek?: number;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  date?: number;
+
+  @Field(() => Int)
+  roomId: number;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  limitDate?: number;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  limitHour?: number;
 }
