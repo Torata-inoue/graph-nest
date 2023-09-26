@@ -48,41 +48,7 @@ const AddTask: React.FC<AddTaskProps> = ({userId}) => {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <Box component="form" onSubmit={onSubmit}>
-          <DialogTitle>タスク追加</DialogTitle>
-          <DialogContent>
-            <InlineTextInput placeholder="Task Name" error={errors.name} register={register('name', {
-              required: {value: true, message: 'タスク名を入力してください'}
-            })}/>
-            <MultilineInput placeholder="本文" register={register('body')} />
-            <InlineTextInput placeholder="ChatworkルームID" error={errors.roomId} register={register('roomId', {
-              required: {value: true, message: 'ChatworkルームIDを入力して下さい'},
-              valueAsNumber: true
-            })} />
-            {/*TODO chatworkデータを取得したい*/}
-            <MultilineInput placeholder="toで宛先にしたいchatwork idを入力して下さい" register={register('to')} />
-            <SelectInput placeholder="タスク or 通常チャット" name="isTask" control={control}>
-              <MenuItem value="1">タスク</MenuItem>
-              <MenuItem value="0">通常チャット</MenuItem>
-            </SelectInput>
-            <InlineTextInput placeholder="何時に送信？" error={errors.dueTime} type="number" register={register('dueTime', {
-              required: {value: true, message: '何時に送信するかを入力して下さい'},
-              valueAsNumber: true
-            })} />
-            {/*TODO 選択肢を広げる*/}
-            <SelectInput placeholder="毎週何曜日に送信？" name="dayOfWeek" control={control}>
-              <MenuItem value="0">日曜日</MenuItem>
-              <MenuItem value="1">月曜日</MenuItem>
-              <MenuItem value="2">火曜日</MenuItem>
-              <MenuItem value="3">水曜日</MenuItem>
-              <MenuItem value="4">木曜日</MenuItem>
-              <MenuItem value="5">金曜日</MenuItem>
-              <MenuItem value="6">土曜日</MenuItem>
-            </SelectInput>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Add</Button>
-          </DialogActions>
+
         </Box>
       </Dialog>
     </div>
