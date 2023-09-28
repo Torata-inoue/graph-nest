@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {UseFormReturn} from "react-hook-form";
 import TaskOrMessage from "./TaskOrMessage.tsx";
 import SelectRoom from "./SelectRoom.tsx";
@@ -8,10 +8,11 @@ import DueTime from "./DueTime.tsx";
 import Confirm from "./Confirm.tsx";
 
 type TaskPaneRouterProps = {
-  routeNum: number;
+  defaultRouteNum?: number;
   useFormMethods: UseFormReturn;
 };
-const TaskPaneRouter: React.FC<TaskPaneRouterProps> = ({routeNum, useFormMethods}) => {
+const TaskPaneRouter: React.FC<TaskPaneRouterProps> = ({defaultRouteNum = 1, useFormMethods}) => {
+  const [routeNum, setRouteNum] = useState(defaultRouteNum);
   if (routeNum === 1) {
     return <TaskOrMessage />
   }
