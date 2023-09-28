@@ -1,6 +1,6 @@
 import { useForm, UseFormReturn } from "react-hook-form";
 
-type AddTaskInputType = {
+export type TaskInputType = {
   name: string;
   body: string;
   userId: number;
@@ -14,10 +14,10 @@ type AddTaskInputType = {
   limitDate?: number;
   limitHour?: number;
 };
-export const useAddTask: (userId: number) => UseFormReturn<AddTaskInputType> = (
+export const useAddTask: (userId: number) => UseFormReturn<TaskInputType> = (
   userId,
 ) => {
-  return useForm<AddTaskInputType>({
+  return useForm<TaskInputType>({
     defaultValues: {
       name: "",
       body: "",

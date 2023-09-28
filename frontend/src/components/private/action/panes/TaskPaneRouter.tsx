@@ -1,34 +1,82 @@
-import React, {useState} from "react";
-import {UseFormReturn} from "react-hook-form";
+import React, { useState } from "react";
+import { UseFormReturn } from "react-hook-form";
 import TaskOrMessage from "./TaskOrMessage.tsx";
 import SelectRoom from "./SelectRoom.tsx";
 import SelectMention from "./SelectMention.tsx";
 import TaskDetail from "./TaskDetail.tsx";
 import DueTime from "./DueTime.tsx";
 import Confirm from "./Confirm.tsx";
+import { TaskInputType } from "../../../../hooks/private/useAddTask.ts";
+import { ROUTE_NUM } from "../../../../types/routeNum.ts";
 
+export type TaskPanesProps = {
+  title: string;
+  setRouteNum: (num: number) => void;
+  formMethods: UseFormReturn<TaskInputType>;
+};
 type TaskPaneRouterProps = {
   defaultRouteNum?: number;
-  useFormMethods: UseFormReturn;
+  useFormMethods: UseFormReturn<TaskInputType>;
+  title: string;
 };
-const TaskPaneRouter: React.FC<TaskPaneRouterProps> = ({defaultRouteNum = 1, useFormMethods}) => {
+const TaskPaneRouter: React.FC<TaskPaneRouterProps> = ({
+  defaultRouteNum = ROUTE_NUM.TASK_OR_MESSAGE,
+  useFormMethods,
+  title,
+}) => {
   const [routeNum, setRouteNum] = useState(defaultRouteNum);
-  if (routeNum === 1) {
-    return <TaskOrMessage />
+  if (routeNum === ROUTE_NUM.TASK_OR_MESSAGE) {
+    return (
+      <TaskOrMessage
+        title={title}
+        setRouteNum={setRouteNum}
+        formMethods={useFormMethods}
+      />
+    );
   }
-  if (routeNum === 2) {
-    return <SelectRoom />
+  if (routeNum === ROUTE_NUM.SELECT_ROOM) {
+    return (
+      <SelectRoom
+        title={title}
+        setRouteNum={setRouteNum}
+        formMethods={useFormMethods}
+      />
+    );
   }
-  if (routeNum === 3) {
-    return <SelectMention />
+  if (routeNum === ROUTE_NUM.SELECT_MENTION) {
+    return (
+      <SelectMention
+        title={title}
+        setRouteNum={setRouteNum}
+        formMethods={useFormMethods}
+      />
+    );
   }
-  if (routeNum === 4) {
-    return <TaskDetail />
+  if (routeNum === ROUTE_NUM.TASK_DETAIL) {
+    return (
+      <TaskDetail
+        title={title}
+        setRouteNum={setRouteNum}
+        formMethods={useFormMethods}
+      />
+    );
   }
-  if (routeNum === 5) {
-    return <DueTime />
+  if (routeNum === ROUTE_NUM.DUE_TIME) {
+    return (
+      <DueTime
+        title={title}
+        setRouteNum={setRouteNum}
+        formMethods={useFormMethods}
+      />
+    );
   }
-  return <Confirm />
-}
+  return (
+    <Confirm
+      title={title}
+      setRouteNum={setRouteNum}
+      formMethods={useFormMethods}
+    />
+  );
+};
 
 export default TaskPaneRouter;
