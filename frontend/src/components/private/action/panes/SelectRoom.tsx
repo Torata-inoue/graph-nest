@@ -39,7 +39,7 @@ const SelectRoom: React.FC<TaskPanesProps> = React.memo(
         return;
       }
       setRouteNum(ROUTE_NUM.SELECT_MENTION);
-    }
+    };
 
     return (
       <>
@@ -80,9 +80,7 @@ const SelectRoom: React.FC<TaskPanesProps> = React.memo(
             <Button onClick={() => setRouteNum(ROUTE_NUM.TASK_OR_MESSAGE)}>
               戻る
             </Button>
-            <Button onClick={handleClickNext}>
-              次へ
-            </Button>
+            <Button onClick={handleClickNext}>次へ</Button>
           </DialogActions>
         </DialogContent>
       </>

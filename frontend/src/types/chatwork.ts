@@ -15,12 +15,12 @@ export type RoomType = {
 };
 
 export type MemberType = {
-  account_id: number;
+  accountId: number;
   role: "admin" | "member" | "readonly";
   name: string;
-  chatwork_id: string;
-  organization_id: number;
-  organization_name: string;
+  chatworkId: string;
+  organizationId: number;
+  organizationName: string;
   department: string;
-  avatar_image_url: string;
+  avatarImageUrl: string;
 };

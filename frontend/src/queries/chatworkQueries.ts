@@ -19,3 +19,18 @@ export const GET_ROOMS = gql`
     }
   }
 `;
+
+export const GET_MEMBERS = gql`
+  query getMembers($roomId: Int!) {
+    getMembers(roomId: $roomId) {
+      accountId
+      role
+      name
+      chatworkId
+      organizationId
+      organizationName
+      department
+      avatarImageUrl
+    }
+  }
+`;

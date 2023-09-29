@@ -5,7 +5,7 @@ export type TaskInputType = {
   body: string;
   userId: number;
   isTask: boolean;
-  to: string;
+  to: number[];
   dueTime: number;
   isEveryday: boolean;
   dayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -23,7 +23,7 @@ export const useAddTask: (userId: number) => UseFormReturn<TaskInputType> = (
       body: "",
       userId,
       isTask: false,
-      to: "",
+      to: [],
       dueTime: 10,
       isEveryday: false,
     },
