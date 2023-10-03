@@ -18,7 +18,6 @@ import { GET_ROOMS } from "../../../../queries/chatworkQueries.ts";
 import { RoomType } from "../../../../types/chatwork.ts";
 import Loading from "../../Loading.tsx";
 import Typography from "@mui/material/Typography";
-import { Controller } from "react-hook-form";
 import Avatar from "@mui/material/Avatar";
 
 const SelectRoom: React.FC<TaskPanesProps> = React.memo(
@@ -26,11 +25,17 @@ const SelectRoom: React.FC<TaskPanesProps> = React.memo(
     const { loading, data, error } = useQuery<{ getRooms: RoomType[] }>(
       GET_ROOMS,
     );
-    const { control, register, trigger } = formMethods;
+    const { setValue, register, trigger } = formMethods;
     register("roomId", {
       required: { value: true, message: "投稿するルームを選択してください" },
       min: { value: 1, message: "投稿するルームを選択してください" },
     });
+    const handleClickRadio: React.MouseEventHandler<HTMLButtonElement> = (
+      event,
+    ) => {
+      // @ts-ignore
+      setValue("roomId", parseInt(event.target.value));
+    };
 
     const handleClickNext = async () => {
       const isValid = await trigger("roomId");
@@ -50,30 +55,21 @@ const SelectRoom: React.FC<TaskPanesProps> = React.memo(
             {loading && <Loading />}
             {error && <Typography color="red">エラーが発生しました</Typography>}
             {!loading && !error && (
-              <Controller
-                name="roomId"
-                control={control}
-                defaultValue={0}
-                render={({ field }) => (
-                  <RadioGroup {...field}>
-                    {data?.getRooms.map((room) => (
-                      <FormControlLabel
-                        key={room.roomId}
-                        value={room.roomId}
-                        control={<Radio />}
-                        label={
-                          <Chip
-                            avatar={
-                              <Avatar alt={room.name} src={room.iconPath} />
-                            }
-                            label={room.name}
-                          />
-                        }
+              <RadioGroup>
+                {data?.getRooms.map((room) => (
+                  <FormControlLabel
+                    key={room.roomId}
+                    value={room.roomId}
+                    control={<Radio onClick={handleClickRadio} />}
+                    label={
+                      <Chip
+                        avatar={<Avatar alt={room.name} src={room.iconPath} />}
+                        label={room.name}
                       />
-                    ))}
-                  </RadioGroup>
-                )}
-              />
+                    }
+                  />
+                ))}
+              </RadioGroup>
             )}
           </FormControl>
           <DialogActions>
