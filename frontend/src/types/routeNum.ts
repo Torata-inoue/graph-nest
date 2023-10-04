@@ -4,5 +4,4 @@ export const ROUTE_NUM = {
   SELECT_MENTION: 3,
   TASK_DETAIL: 4,
   DUE_TIME: 5,
-  CONFIRM: 6,
 } as const;

@@ -5,7 +5,6 @@ import SelectRoom from "./SelectRoom.tsx";
 import SelectMention from "./SelectMention.tsx";
 import TaskDetail from "./TaskDetail.tsx";
 import DueTime from "./DueTime.tsx";
-import Confirm from "./Confirm.tsx";
 import { TaskInputType } from "../../../../hooks/private/useAddTask.ts";
 import { ROUTE_NUM } from "../../../../types/routeNum.ts";
 
@@ -61,17 +60,8 @@ const TaskPaneRouter: React.FC<TaskPaneRouterProps> = ({
       />
     );
   }
-  if (routeNum === ROUTE_NUM.DUE_TIME) {
-    return (
-      <DueTime
-        title={title}
-        setRouteNum={setRouteNum}
-        formMethods={useFormMethods}
-      />
-    );
-  }
   return (
-    <Confirm
+    <DueTime
       title={title}
       setRouteNum={setRouteNum}
       formMethods={useFormMethods}
