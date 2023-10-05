@@ -14,18 +14,18 @@ import { TaskPanesProps } from "./TaskPaneRouter.tsx";
 import { ROUTE_NUM } from "../../../../types/routeNum.ts";
 import { useQuery } from "@apollo/client";
 import { MemberType } from "../../../../types/chatwork.ts";
-import { useWatch } from "react-hook-form";
+import { Controller, ControllerRenderProps, useWatch } from "react-hook-form";
 import Loading from "../../Loading.tsx";
 import Typography from "@mui/material/Typography";
 import { GET_MEMBERS } from "../../../../queries/chatworkQueries.ts";
 import Avatar from "@mui/material/Avatar";
+import { TaskInputType } from "../../../../hooks/private/useAddTask.ts";
 
 const TO_ID = -1;
 const SelectMention: React.FC<TaskPanesProps> = React.memo(
   ({ title, setRouteNum, formMethods }) => {
-    const { control, trigger, register, setValue, getValues } = formMethods;
+    const { control, trigger, register, setValue } = formMethods;
     const roomId = useWatch({ control, name: "roomId" });
-    const to = useWatch({ control, name: "to" });
     register("to", {
       required: { value: true, message: "投稿するルームを選択してください" },
     });
@@ -36,18 +36,17 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
       },
     );
 
-    const handleClickCheck: React.MouseEventHandler<HTMLButtonElement> = (
-      event,
-    ) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    const handleOnChangeCheck: (
+      field: ControllerRenderProps<TaskInputType, "to">,
+    ) => (
+      event: React.ChangeEvent<HTMLInputElement>,
+      checked: boolean,
+    ) => void = (field) => (event, checked) => {
       const value = parseInt(event.target.value);
-      const to = getValues("to");
-
-      if (to.some((v) => v === value)) {
+      if (checked) {
         setValue(
           "to",
-          to.filter((v) => v !== value),
+          field.value.filter((val) => val !== value),
         );
         return;
       }
@@ -57,8 +56,7 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
         return;
       }
 
-      to.push(value);
-      setValue("to", to);
+      setValue("to", [...field.value, value]);
     };
 
     const handleClickNext = async () => {
@@ -78,28 +76,43 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
             {loading && <Loading />}
             {error && <Typography color="red">エラーが発生しました</Typography>}
             {!loading && !error && (
-              <FormGroup>
-                <FormControlLabel
-                  value={0}
-                  control={<Checkbox onClick={handleClickCheck} />}
-                  label="To ALL"
-                />
-                {data?.getMembers.map((member) => (
-                  <FormControlLabel
-                    key={member.accountId}
-                    value={member.accountId}
-                    control={
-                      <Checkbox
-                        onClick={handleClickCheck}
-                        disabled={to[0] === TO_ID}
+              <Controller
+                name="to"
+                control={control}
+                render={({ field }) => (
+                  <FormGroup>
+                    <FormControlLabel
+                      value={TO_ID}
+                      control={
+                        <Checkbox
+                          onChange={handleOnChangeCheck(field)}
+                          checked={field.value.includes(TO_ID)}
+                        />
+                      }
+                      label="To ALL"
+                    />
+                    {data?.getMembers.map((member) => (
+                      <FormControlLabel
+                        key={member.accountId}
+                        value={member.accountId}
+                        control={
+                          <Checkbox
+                            onChange={handleOnChangeCheck(field)}
+                            checked={field.value.includes(member.accountId)}
+                            disabled={field.value.includes(TO_ID)}
+                          />
+                        }
+                        label={
+                          <Avatar
+                            alt={member.name}
+                            src={member.avatarImageUrl}
+                          />
+                        }
                       />
-                    }
-                    label={
-                      <Avatar alt={member.name} src={member.avatarImageUrl} />
-                    }
-                  />
-                ))}
-              </FormGroup>
+                    ))}
+                  </FormGroup>
+                )}
+              />
             )}
           </FormControl>
           <DialogActions>

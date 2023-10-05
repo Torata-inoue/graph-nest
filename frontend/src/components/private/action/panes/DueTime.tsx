@@ -187,9 +187,7 @@ const DueTime: React.FC<TaskPanesProps> = ({
           <Button onClick={() => setRouteNum(ROUTE_NUM.TASK_DETAIL)}>
             戻る
           </Button>
-          <Button type="submit">
-            送信する
-          </Button>
+          <Button type="submit">送信する</Button>
         </DialogActions>
       </DialogContent>
     </>
