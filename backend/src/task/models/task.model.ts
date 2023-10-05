@@ -18,7 +18,7 @@ export class Task {
   isTask: boolean;
 
   @Field()
-  to: string;
+  to: number[];
 
   @Field(() => Int)
   dueTime: number;

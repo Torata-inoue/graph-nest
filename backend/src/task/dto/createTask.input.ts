@@ -20,7 +20,7 @@ export class CreateTaskInput {
 
   @Field()
   @IsNotEmpty()
-  to: string;
+  to: number[];
 
   @Field(() => Int)
   @IsNumber()

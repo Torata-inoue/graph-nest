@@ -4,7 +4,7 @@ export type Task = {
   body: string;
   userId: number;
   isTask: boolean;
-  to: string;
+  to: number[];
   dueTime: number;
   isEveryday: boolean;
   dayOfWeek?: number;
