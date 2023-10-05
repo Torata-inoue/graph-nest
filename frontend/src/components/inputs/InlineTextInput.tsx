@@ -7,19 +7,21 @@ type InlineTextInputProps = {
   error: FieldError | undefined;
   register: UseFormRegisterReturn;
   type?: HTMLInputTypeAttribute;
+  fullWidth?: boolean;
 };
 const InlineTextInput: React.FC<InlineTextInputProps> = ({
   placeholder,
   error,
   register,
   type = "text",
+  fullWidth = true,
 }) => {
   return (
     <TextField
       autoFocus
       margin="normal"
       label={placeholder}
-      fullWidth
+      fullWidth={fullWidth}
       required
       error={Boolean(error)}
       helperText={error?.message}

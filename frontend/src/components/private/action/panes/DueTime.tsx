@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import {
+  Divider,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -119,9 +120,9 @@ const DueTime: React.FC<TaskPanesProps> = ({
     <>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <FormLabel>実行タイミング</FormLabel>
-        <FormControl>
-          <RadioGroup>
+        <FormControl fullWidth>
+          <FormLabel>実行タイミング</FormLabel>
+          <RadioGroup row>
             {dueTypes.map((type) => (
               <FormControlLabel
                 key={type.key}
@@ -137,7 +138,7 @@ const DueTime: React.FC<TaskPanesProps> = ({
             ))}
           </RadioGroup>
           <SelectDue type={currentType} formMethods={formMethods} />
-          <FormLabel>何時？</FormLabel>
+          <FormLabel>何時に送信？</FormLabel>
           <InlineTextInput
             placeholder="実行時間(時)"
             error={errors.name}
@@ -151,9 +152,10 @@ const DueTime: React.FC<TaskPanesProps> = ({
           />
           {isTask && (
             <>
+              <Divider variant="middle" sx={{ my: 3 }} />
               <FormLabel>タスク期限</FormLabel>
               <InlineTextInput
-                placeholder="日"
+                placeholder="日後"
                 error={errors.limitDate}
                 type="number"
                 register={register("limitDate", {
@@ -164,9 +166,8 @@ const DueTime: React.FC<TaskPanesProps> = ({
                   },
                 })}
               />
-              日
               <InlineTextInput
-                placeholder="時間"
+                placeholder="時間後"
                 error={errors.limitHour}
                 type="number"
                 register={register("limitHour", {
@@ -179,7 +180,6 @@ const DueTime: React.FC<TaskPanesProps> = ({
                   max: { value: 24, message: "0~24時の間で入力してください" },
                 })}
               />
-              時間後
             </>
           )}
         </FormControl>
