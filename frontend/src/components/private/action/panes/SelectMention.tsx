@@ -3,6 +3,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import {
   Checkbox,
+  Chip,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -43,7 +44,7 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
       checked: boolean,
     ) => void = (field) => (event, checked) => {
       const value = parseInt(event.target.value);
-      if (checked) {
+      if (!checked) {
         setValue(
           "to",
           field.value.filter((val) => val !== value),
@@ -103,9 +104,14 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
                           />
                         }
                         label={
-                          <Avatar
-                            alt={member.name}
-                            src={member.avatarImageUrl}
+                          <Chip
+                            avatar={
+                              <Avatar
+                                alt={member.name}
+                                src={member.avatarImageUrl}
+                              />
+                            }
+                            label={member.name}
                           />
                         }
                       />

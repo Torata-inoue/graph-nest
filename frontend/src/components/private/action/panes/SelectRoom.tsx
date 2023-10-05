@@ -33,6 +33,7 @@ const SelectRoom: React.FC<TaskPanesProps> = React.memo(
     const handleClickRadio: React.MouseEventHandler<HTMLButtonElement> = (
       event,
     ) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setValue("roomId", parseInt(event.target.value));
     };
