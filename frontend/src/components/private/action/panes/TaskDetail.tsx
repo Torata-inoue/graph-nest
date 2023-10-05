@@ -32,17 +32,20 @@ const TaskDetail: React.FC<TaskPanesProps> = ({
     <>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <FormControl>
+        <FormControl fullWidth>
           <FormLabel>タスクの詳細</FormLabel>
           <InlineTextInput
             placeholder="タスクタイトル"
-            register={register("name")}
+            register={register("name", {
+              required: true,
+            })}
             error={errors.name}
           />
-          <FormLabel>メッセージ本文</FormLabel>
           <MultilineInput
             placeholder="メッセージ本文"
-            register={register("body")}
+            register={register("body", {
+              required: true,
+            })}
             error={errors.body}
           />
         </FormControl>

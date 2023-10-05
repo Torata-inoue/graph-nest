@@ -38,7 +38,7 @@ const AddTask: React.FC<AddTaskProps> = ({ userId }) => {
       <Button variant="contained" onClick={handleClickOpen} sx={{ width: 270 }}>
         タスク追加
       </Button>
-      <Dialog open={open} onClose={handleClose} fullWidth>
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <Box component="form" onSubmit={onSubmit}>
           <TaskPaneRouter useFormMethods={methods} title="新規作成" />
         </Box>
