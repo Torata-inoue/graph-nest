@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { TaskService } from '../task/task.service';
-import { HttpService } from '@nestjs/axios';
+import { ChatworkService } from '../chatwork/chatwork.service';
+import { Task } from '@prisma/client';
 
 @Injectable()
 export class SendMessageService {
   constructor(
     private readonly taskService: TaskService,
-    private readonly httpService: HttpService,
+    private readonly chatworkService: ChatworkService,
   ) {}
 
   // @Cron('* 30 * * * *')
@@ -20,22 +21,25 @@ export class SendMessageService {
       now.getDate(),
     );
 
-    const headers = {
-      'X-ChatWorkToken': 'eccbf082087840e4d15c6839fede3a7e',
-    };
+    // tasks.map((task: Task) => {
+    //   // TODO toIdsを配列化
+    //   const toIds = task.to;
+    //   if (task.isTask) {
+    //     const limit = this.getLimit(task, now);
+    //     this.chatworkService.postTask(task.roomId, toIds, task.body, limit);
+    //     return;
+    //   }
+    //
+    //   this.chatworkService.postMessage(task.roomId, toIds, task.body);
+    // });
+  }
 
-    tasks.map(async (task) => {
-      const endpoint = `https://api.chatwork.com/v2/rooms/${task.roomId}/messages`;
-      const toIds = task.to;
-      const body = `body=[To:${toIds}]\n${task.body}`;
+  getLimit(task: Task, now: Date): number {
+    const limit =
+      now.getTime() +
+      task.limitDate * 24 * 60 * 60 * 1000 +
+      task.limitHour * 60 * 60 * 1000;
 
-      try {
-        const res = await this.httpService
-          .post(endpoint, body, { headers })
-          .toPromise();
-      } catch (error) {
-        console.log(error.response);
-      }
-    });
+    return Math.floor(limit) / 1000;
   }
 }

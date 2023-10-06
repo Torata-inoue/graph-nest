@@ -10,9 +10,10 @@ export class TaskService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async getTasks(userId: number): Promise<Task[]> {
-    return this.prismaService.task.findMany({
+    const tasks = await this.prismaService.task.findMany({
       where: { userId },
     });
+    return tasks.map((task) => ({ ...task, to: JSON.parse(task.to) }));
   }
 
   async getSendTasks(
@@ -47,7 +48,7 @@ export class TaskService {
       limitDate,
       limitHour,
     } = createTaskInput;
-    return this.prismaService.task.create({
+    const task = await this.prismaService.task.create({
       data: {
         name,
         isTask,
@@ -55,7 +56,7 @@ export class TaskService {
         date,
         dueTime,
         dayOfWeek,
-        to,
+        to: JSON.stringify(to),
         body,
         isEveryday,
         roomId,
@@ -63,6 +64,8 @@ export class TaskService {
         limitHour,
       },
     });
+
+    return { ...task, to: JSON.parse(task.to) };
   }
 
   // async updateTask(updateTaskInput: UpdateTaskInput): Promise<Task> {

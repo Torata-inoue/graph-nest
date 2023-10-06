@@ -1,24 +1,18 @@
 import { useForm, UseFormReturn } from "react-hook-form";
-import { TaskStatus } from "../../types/taskStatus.ts";
-import { Task } from "../../types/task.ts";
+import { TaskInputType } from "./useAddTask.ts";
 
-type UpdateTaskInput = {
-  id: number;
-  name: string;
-  dueDate: string;
-  status: TaskStatus;
-  description: string;
-};
-export const useEditTask: (task: Task) => UseFormReturn<UpdateTaskInput> = (
-  task,
+export const useEditTask: (userId: number) => UseFormReturn<TaskInputType> = (
+  userId,
 ) => {
-  return useForm<UpdateTaskInput>({
+  return useForm<TaskInputType>({
     defaultValues: {
-      id: task.id,
-      name: task.name,
-      dueDate: task.dueDate,
-      status: task.status,
-      description: task.description,
+      name: "",
+      body: "",
+      userId,
+      isTask: false,
+      to: "",
+      dueTime: 10,
+      isEveryday: false,
     },
   });
 };

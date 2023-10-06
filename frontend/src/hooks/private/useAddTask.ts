@@ -1,11 +1,11 @@
 import { useForm, UseFormReturn } from "react-hook-form";
 
-type AddTaskInputType = {
+export type TaskInputType = {
   name: string;
   body: string;
   userId: number;
   isTask: boolean;
-  to: string;
+  to: number[];
   dueTime: number;
   isEveryday: boolean;
   dayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -14,16 +14,16 @@ type AddTaskInputType = {
   limitDate?: number;
   limitHour?: number;
 };
-export const useAddTask: (userId: number) => UseFormReturn<AddTaskInputType> = (
+export const useAddTask: (userId: number) => UseFormReturn<TaskInputType> = (
   userId,
 ) => {
-  return useForm<AddTaskInputType>({
+  return useForm<TaskInputType>({
     defaultValues: {
       name: "",
       body: "",
       userId,
       isTask: false,
-      to: "",
+      to: [],
       dueTime: 10,
       isEveryday: false,
     },
