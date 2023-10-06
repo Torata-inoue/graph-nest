@@ -17,7 +17,7 @@ export class Task {
   @Field()
   isTask: boolean;
 
-  @Field()
+  @Field(() => [Int])
   to: number[];
 
   @Field(() => Int)

@@ -19,7 +19,10 @@ const TaskOrMessage: React.FC<TaskPanesProps> = ({
   setRouteNum,
   formMethods,
 }) => {
-  const { control } = formMethods;
+  const { control, setValue } = formMethods;
+  const handelChange: (event: React.ChangeEvent<HTMLInputElement>) => void = event => {
+    setValue('isTask', event.target.value === 'true')
+  }
   return (
     <>
       <DialogTitle>{title}</DialogTitle>
@@ -31,15 +34,15 @@ const TaskOrMessage: React.FC<TaskPanesProps> = ({
             control={control}
             defaultValue={false}
             render={({ field }) => (
-              <RadioGroup {...field} row>
+              <RadioGroup row>
                 <FormControlLabel
                   value={true}
-                  control={<Radio />}
+                  control={<Radio onChange={handelChange} checked={field.value === true} />}
                   label="タスクを作成"
                 />
                 <FormControlLabel
                   value={false}
-                  control={<Radio />}
+                  control={<Radio onChange={handelChange} checked={field.value === false} />}
                   label="メッセージを作成"
                 />
               </RadioGroup>

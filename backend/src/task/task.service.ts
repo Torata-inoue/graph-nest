@@ -48,7 +48,7 @@ export class TaskService {
       limitDate,
       limitHour,
     } = createTaskInput;
-    return this.prismaService.task.create({
+    const task = await this.prismaService.task.create({
       data: {
         name,
         isTask,
@@ -64,6 +64,8 @@ export class TaskService {
         limitHour,
       },
     });
+
+    return { ...task, to: JSON.parse(task.to) };
   }
 
   // async updateTask(updateTaskInput: UpdateTaskInput): Promise<Task> {

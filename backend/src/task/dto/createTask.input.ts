@@ -18,7 +18,7 @@ export class CreateTaskInput {
   @IsBoolean()
   isTask: boolean;
 
-  @Field()
+  @Field(() => [Int])
   @IsNotEmpty()
   to: number[];
 

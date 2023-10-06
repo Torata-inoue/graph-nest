@@ -21,17 +21,17 @@ export class SendMessageService {
       now.getDate(),
     );
 
-    tasks.map((task: Task) => {
-      // TODO toIdsを配列化
-      const toIds = task.to;
-      if (task.isTask) {
-        const limit = this.getLimit(task, now);
-        this.chatworkService.postTask(task.roomId, toIds, task.body, limit);
-        return;
-      }
-
-      this.chatworkService.postMessage(task.roomId, toIds, task.body);
-    });
+    // tasks.map((task: Task) => {
+    //   // TODO toIdsを配列化
+    //   const toIds = task.to;
+    //   if (task.isTask) {
+    //     const limit = this.getLimit(task, now);
+    //     this.chatworkService.postTask(task.roomId, toIds, task.body, limit);
+    //     return;
+    //   }
+    //
+    //   this.chatworkService.postMessage(task.roomId, toIds, task.body);
+    // });
   }
 
   getLimit(task: Task, now: Date): number {
