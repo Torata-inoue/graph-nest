@@ -10,6 +10,20 @@ import { Task } from "../../types/task.ts";
 import EditTask from "./action/EditTasks.tsx";
 import DeleteTask from "./action/DeleteTask.tsx";
 import { Stack } from "@mui/material";
+import { weeks } from "../../types/settings.ts";
+
+const getDueTime = (task: Task): string => {
+  if (task.isEveryday) {
+    return `毎日 ${task.dueTime}時`;
+  }
+
+  if (task.dayOfWeek) {
+    const dayOfWeek = weeks.find((date) => date.value === task.dayOfWeek)?.key;
+    return `毎週 ${dayOfWeek} ${task.dueTime}時`;
+  }
+
+  return `毎月 ${task.date}日 ${task.dueTime}時`;
+};
 
 type TaskTableProps = {
   tasks: Task[] | undefined;
@@ -21,7 +35,10 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, userId }) => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Task Name</TableCell>
+            <TableCell>タイトル</TableCell>
+            <TableCell>種別</TableCell>
+            <TableCell>実行タイミング</TableCell>
+            <TableCell>タスク期限（タスクの場合）</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
@@ -33,6 +50,15 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, userId }) => {
             >
               <TableCell component="th" scope="row">
                 {task.name}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {task.isTask ? "タスク" : "メッセージ"}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {getDueTime(task)}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {task.isTask ? `${task.limitDate}日${task.limitHour}後` : ""}
               </TableCell>
               <TableCell align="right">
                 <Stack spacing={2} direction="row" justifyContent="flex-end">

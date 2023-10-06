@@ -7,7 +7,7 @@ export type Task = {
   to: number[];
   dueTime: number;
   isEveryday: boolean;
-  dayOfWeek?: number;
+  dayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   date?: number;
   roomId: number;
   limitDate?: number;
