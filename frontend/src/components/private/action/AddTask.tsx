@@ -16,6 +16,8 @@ const AddTask: React.FC<AddTaskProps> = ({ userId }) => {
   const createTask = useMutationApi<{ createTask: Task }>(CREATE_TASK);
 
   const onSubmit = methods.handleSubmit(async (data) => {
+    console.log(data);
+    return;
     await createTask({ createTaskInput: data }, [
       { query: GET_TASKS, variables: { userId } },
     ]);
