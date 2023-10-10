@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateTaskInput } from './dto/createTask.input';
 import { PrismaService } from '../prisma/prisma.service';
 import { Task } from '@prisma/client';
-// import { UpdateTaskInput } from './dto/updateTask.input';
+import { UpdateTaskInput } from './dto/updateTask.input';
 import { DeleteTaskInput } from './dto/deleteTask.input';
 
 @Injectable()
@@ -34,47 +34,21 @@ export class TaskService {
   }
 
   async createTask(createTaskInput: CreateTaskInput): Promise<Task> {
-    const {
-      name,
-      isTask,
-      userId,
-      date,
-      dueTime,
-      dayOfWeek,
-      isEveryday,
-      to,
-      body,
-      roomId,
-      limitDate,
-      limitHour,
-    } = createTaskInput;
     const task = await this.prismaService.task.create({
-      data: {
-        name,
-        isTask,
-        userId,
-        date,
-        dueTime,
-        dayOfWeek,
-        to: JSON.stringify(to),
-        body,
-        isEveryday,
-        roomId,
-        limitDate,
-        limitHour,
-      },
+      data: { ...createTaskInput, to: JSON.stringify(createTaskInput.to) },
     });
 
     return { ...task, to: JSON.parse(task.to) };
   }
 
-  // async updateTask(updateTaskInput: UpdateTaskInput): Promise<Task> {
-  //   const { id, name, dueDate, status, description } = updateTaskInput;
-  //   return this.prismaService.task.update({
-  //     data: { name, dueDate, status, description },
-  //     where: { id },
-  //   });
-  // }
+  async updateTask(updateTaskInput: UpdateTaskInput): Promise<Task> {
+    const task = await this.prismaService.task.update({
+      data: { ...updateTaskInput, to: JSON.stringify(updateTaskInput.to) },
+      where: { id: updateTaskInput.id },
+    });
+
+    return { ...task, to: JSON.parse(task.to) };
+  }
 
   async deleteTask(deleteTaskInput: DeleteTaskInput): Promise<Task> {
     const { id } = deleteTaskInput;

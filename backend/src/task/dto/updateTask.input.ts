@@ -1,26 +1,54 @@
-// import { Field, InputType, Int } from '@nestjs/graphql';
-// import { IsDateString, IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
-//
-// @InputType()
-// export class UpdateTaskInput {
-//   @Field(() => Int)
-//   id: number;
-//
-//   @Field({ nullable: true })
-//   @IsNotEmpty()
-//   @IsOptional()
-//   name?: string;
-//
-//   @Field({ nullable: true })
-//   @IsDateString()
-//   @IsOptional()
-//   dueDate?: string;
-//
-//   @Field({ nullable: true })
-//   @IsEnum(Status)
-//   @IsOptional()
-//   status?: Status;
-//
-//   @Field({ nullable: true })
-//   description?: string;
-// }
+import { Field, InputType, Int } from '@nestjs/graphql';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+
+@InputType()
+export class UpdateTaskInput {
+  @Field(() => Int)
+  id: number;
+
+  @Field()
+  @IsNotEmpty()
+  name: string;
+
+  @Field()
+  @IsNotEmpty()
+  body: string;
+
+  @Field(() => Int)
+  userId: number;
+
+  @Field()
+  @IsBoolean()
+  isTask: boolean;
+
+  @Field(() => [Int])
+  @IsNotEmpty()
+  to: number[];
+
+  @Field(() => Int)
+  @IsNumber()
+  dueTime: number;
+
+  @Field()
+  @IsBoolean()
+  isEveryday: boolean;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  dayOfWeek?: number;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  date?: number;
+
+  @Field(() => Int)
+  roomId: number;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  limitDate?: number;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  limitHour?: number;
+}
