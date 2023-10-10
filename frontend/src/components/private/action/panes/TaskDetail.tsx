@@ -22,7 +22,7 @@ const TaskDetail: React.FC<TaskPanesProps> = ({
   const handleClickNext = async () => {
     const isValidName = await trigger("name");
     const isValidBody = await trigger("body");
-    if (!isValidName && !isValidBody) {
+    if (!isValidName || !isValidBody) {
       alert("タイトル、本文を入力してください");
       return;
     }

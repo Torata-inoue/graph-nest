@@ -17,6 +17,7 @@ import InlineTextInput from "../../../inputs/InlineTextInput.tsx";
 import { UseFormReturn } from "react-hook-form";
 import { TaskInputType } from "../../../../hooks/private/useAddTask.ts";
 import { weeks } from "../../../../types/settings.ts";
+import Typography from "@mui/material/Typography";
 
 type SelectDueProps = {
   type: 1 | 2 | 3 | undefined;
@@ -42,6 +43,12 @@ const SelectDue: React.FC<SelectDueProps> = ({ type, formMethods }) => {
       const value: 0 | 1 | 2 | 3 | 4 | 5 | 6 = parseInt(event.target.value);
       setValue("dayOfWeek", value);
     };
+    register("dayOfWeek", {
+      required: {
+        value: type === 2,
+        message: "毎週何曜日に送信するか選択してください",
+      },
+    });
     return (
       <>
         <FormLabel>毎週何曜日？</FormLabel>
@@ -55,6 +62,9 @@ const SelectDue: React.FC<SelectDueProps> = ({ type, formMethods }) => {
             />
           ))}
         </RadioGroup>
+        {errors.dayOfWeek && (
+          <Typography color="red">{errors.dayOfWeek.message}</Typography>
+        )}
       </>
     );
   }
@@ -67,6 +77,10 @@ const SelectDue: React.FC<SelectDueProps> = ({ type, formMethods }) => {
         error={errors.date}
         type="number"
         register={register("date", {
+          required: {
+            value: type === 3,
+            message: "毎月何日に送信するか入力してください",
+          },
           valueAsNumber: true,
           min: { value: 1, message: "日付は1~31を入力してください" },
           max: { value: 31, message: "日付は1~31を入力してください" },
