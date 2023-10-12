@@ -22,14 +22,14 @@ export class TaskService {
     date: number,
   ): Promise<Task[]> {
     return this.prismaService.task.findMany({
-      // where: {
-      //   AND: [
-      //     {
-      //       OR: [{ isEveryday: true }, { dayOfWeek }, { date }],
-      //     },
-      //     { dueTime },
-      //   ],
-      // },
+      where: {
+        AND: [
+          {
+            OR: [{ isEveryday: true }, { dayOfWeek }, { date }],
+          },
+          { dueTime },
+        ],
+      },
     });
   }
 
