@@ -15,7 +15,7 @@ export class ChatworkService {
   ): Promise<void> {
     const endpoint = `https://api.chatwork.com/v2/rooms/${roomId}/messages`;
     const to =
-      toIds[0] === 0
+      toIds[0] === -1
         ? '[toall]\n'
         : toIds.map((id) => `[To:${id}]\n`).join('\n');
 
