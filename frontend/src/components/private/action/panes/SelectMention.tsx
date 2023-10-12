@@ -22,14 +22,15 @@ import { GET_MEMBERS } from "../../../../queries/chatworkQueries.ts";
 import Avatar from "@mui/material/Avatar";
 import { TaskInputType } from "../../../../hooks/private/useAddTask.ts";
 
-const TO_ID = -1;
+const TO_ALL_ID = -1;
 const SelectMention: React.FC<TaskPanesProps> = React.memo(
   ({ title, setRouteNum, formMethods }) => {
-    const { control, trigger, register, setValue } = formMethods;
+    const { control, trigger, register, setValue, getValues } = formMethods;
     const roomId = useWatch({ control, name: "roomId" });
     register("to", {
       required: { value: true, message: "投稿するルームを選択してください" },
     });
+    const isTask = getValues("isTask");
     const { loading, data, error } = useQuery<{ getMembers: MemberType[] }>(
       GET_MEMBERS,
       {
@@ -52,8 +53,15 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
         return;
       }
 
-      if (value === TO_ID) {
-        setValue("to", [TO_ID]);
+      if (value === TO_ALL_ID) {
+        if (isTask) {
+          setValue("to", [TO_ALL_ID]);
+          return;
+        }
+        setValue(
+          "to",
+          data?.getMembers.map((member) => member.accountId) ?? [],
+        );
         return;
       }
 
@@ -83,14 +91,14 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
                 render={({ field }) => (
                   <FormGroup>
                     <FormControlLabel
-                      value={TO_ID}
+                      value={TO_ALL_ID}
                       control={
                         <Checkbox
                           onChange={handleOnChangeCheck(field)}
-                          checked={field.value.includes(TO_ID)}
+                          checked={field.value.includes(TO_ALL_ID)}
                         />
                       }
-                      label="To ALL"
+                      label={isTask ? "全員選択" : "TO ALL"}
                     />
                     {data?.getMembers.map((member) => (
                       <FormControlLabel
@@ -100,7 +108,7 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
                           <Checkbox
                             onChange={handleOnChangeCheck(field)}
                             checked={field.value.includes(member.accountId)}
-                            disabled={field.value.includes(TO_ID)}
+                            disabled={field.value.includes(TO_ALL_ID)}
                           />
                         }
                         label={
