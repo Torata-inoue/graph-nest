@@ -6,12 +6,16 @@ export const GET_TASKS = gql`
       id
       name
       body
+      userId
       isTask
       to
       dueTime
       isEveryday
       dayOfWeek
       date
+      roomId
+      limitDate
+      limitHour
       createdAt
       updatedAt
     }

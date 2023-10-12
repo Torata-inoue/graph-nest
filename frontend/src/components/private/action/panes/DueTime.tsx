@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import { TaskPanesProps } from "./TaskPaneRouter.tsx";
 import { ROUTE_NUM } from "../../../../types/routeNum.ts";
 import InlineTextInput from "../../../inputs/InlineTextInput.tsx";
-import { UseFormReturn } from "react-hook-form";
+import { UseFormGetValues, UseFormReturn } from "react-hook-form";
 import { TaskInputType } from "../../../../hooks/private/useAddTask.ts";
 import { weeks } from "../../../../types/settings.ts";
 import Typography from "@mui/material/Typography";
@@ -95,6 +95,20 @@ const dueTypes = [
   { key: "毎週", value: 2 },
   { key: "毎月", value: 3 },
 ];
+const getDefaultType = (
+  getValues: UseFormGetValues<TaskInputType>,
+): 1 | 2 | 3 | undefined => {
+  if (getValues("isEveryday")) {
+    return 1;
+  }
+  if (getValues("dayOfWeek") !== undefined) {
+    return 2;
+  }
+  if (getValues("date")) {
+    return 3;
+  }
+  return undefined;
+};
 const DueTime: React.FC<TaskPanesProps> = ({
   title,
   formMethods,
@@ -107,7 +121,9 @@ const DueTime: React.FC<TaskPanesProps> = ({
     setValue,
     resetField,
   } = formMethods;
-  const [currentType, setCurrentType] = useState<1 | 2 | 3>();
+  const [currentType, setCurrentType] = useState<1 | 2 | 3 | undefined>(
+    getDefaultType(getValues),
+  );
   const isTask = getValues("isTask");
 
   const handleClickRadio: React.MouseEventHandler<HTMLButtonElement> = (

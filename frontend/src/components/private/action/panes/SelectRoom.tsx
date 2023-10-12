@@ -19,17 +19,19 @@ import { RoomType } from "../../../../types/chatwork.ts";
 import Loading from "../../Loading.tsx";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
+import { Controller } from "react-hook-form";
 
 const SelectRoom: React.FC<TaskPanesProps> = React.memo(
   ({ title, formMethods, setRouteNum }) => {
     const { loading, data, error } = useQuery<{ getRooms: RoomType[] }>(
       GET_ROOMS,
     );
-    const { setValue, register, trigger } = formMethods;
+    const { setValue, register, trigger, control } = formMethods;
     register("roomId", {
       required: { value: true, message: "投稿するルームを選択してください" },
       min: { value: 1, message: "投稿するルームを選択してください" },
     });
+
     const handleClickRadio: React.MouseEventHandler<HTMLButtonElement> = (
       event,
     ) => {
@@ -56,21 +58,34 @@ const SelectRoom: React.FC<TaskPanesProps> = React.memo(
             {loading && <Loading />}
             {error && <Typography color="red">エラーが発生しました</Typography>}
             {!loading && !error && (
-              <RadioGroup>
-                {data?.getRooms.map((room) => (
-                  <FormControlLabel
-                    key={room.roomId}
-                    value={room.roomId}
-                    control={<Radio onClick={handleClickRadio} />}
-                    label={
-                      <Chip
-                        avatar={<Avatar alt={room.name} src={room.iconPath} />}
-                        label={room.name}
+              <Controller
+                name="roomId"
+                control={control}
+                render={({ field }) => (
+                  <RadioGroup>
+                    {data?.getRooms.map((room) => (
+                      <FormControlLabel
+                        key={room.roomId}
+                        value={room.roomId}
+                        control={
+                          <Radio
+                            onClick={handleClickRadio}
+                            checked={field.value === room.roomId}
+                          />
+                        }
+                        label={
+                          <Chip
+                            avatar={
+                              <Avatar alt={room.name} src={room.iconPath} />
+                            }
+                            label={room.name}
+                          />
+                        }
                       />
-                    }
-                  />
-                ))}
-              </RadioGroup>
+                    ))}
+                  </RadioGroup>
+                )}
+              />
             )}
           </FormControl>
           <DialogActions>

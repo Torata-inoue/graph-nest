@@ -23,9 +23,16 @@ export const UPDATE_TASK = gql`
     updateTask(updateTaskInput: $updateTaskInput) {
       id
       name
-      status
-      dueDate
-      description
+      body
+      isTask
+      userId
+      to
+      dueTime
+      isEveryday
+      dayOfWeek
+      date
+      createdAt
+      updatedAt
     }
   }
 `;
