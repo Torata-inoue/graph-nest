@@ -58,7 +58,9 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, userId }) => {
                 {getDueTime(task)}
               </TableCell>
               <TableCell component="th" scope="row">
-                {task.isTask ? `${task.limitDate}日${task.limitHour}後` : ""}
+                {task.isTask
+                  ? `${task.limitDate}日と${task.limitHour}時間後`
+                  : ""}
               </TableCell>
               <TableCell align="right">
                 <Stack spacing={2} direction="row" justifyContent="flex-end">

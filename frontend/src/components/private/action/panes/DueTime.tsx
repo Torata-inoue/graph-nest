@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import { TaskPanesProps } from "./TaskPaneRouter.tsx";
 import { ROUTE_NUM } from "../../../../types/routeNum.ts";
 import InlineTextInput from "../../../inputs/InlineTextInput.tsx";
-import { UseFormGetValues, UseFormReturn } from "react-hook-form";
+import { Controller, UseFormGetValues, UseFormReturn } from "react-hook-form";
 import { TaskInputType } from "../../../../hooks/private/useAddTask.ts";
 import { weeks } from "../../../../types/settings.ts";
 import Typography from "@mui/material/Typography";
@@ -28,7 +28,24 @@ const SelectDue: React.FC<SelectDueProps> = ({ type, formMethods }) => {
     register,
     formState: { errors },
     setValue,
+    control,
   } = formMethods;
+
+  register("dayOfWeek", {
+    required: {
+      value: type === 2,
+      message: "毎週何曜日に送信するか選択してください",
+    },
+  });
+  const monthRegister = register("date", {
+    required: {
+      value: type === 3,
+      message: "毎月何日に送信するか入力してください",
+    },
+    valueAsNumber: true,
+    min: { value: 1, message: "日付は1~31を入力してください" },
+    max: { value: 31, message: "日付は1~31を入力してください" },
+  });
 
   if (type === 1 || type === undefined) {
     return null;
@@ -43,25 +60,30 @@ const SelectDue: React.FC<SelectDueProps> = ({ type, formMethods }) => {
       const value: 0 | 1 | 2 | 3 | 4 | 5 | 6 = parseInt(event.target.value);
       setValue("dayOfWeek", value);
     };
-    register("dayOfWeek", {
-      required: {
-        value: type === 2,
-        message: "毎週何曜日に送信するか選択してください",
-      },
-    });
     return (
       <>
         <FormLabel>毎週何曜日？</FormLabel>
-        <RadioGroup>
-          {weeks.map((date) => (
-            <FormControlLabel
-              key={date.key}
-              value={date.value}
-              control={<Radio onClick={handleClickRadio} />}
-              label={date.key}
-            />
-          ))}
-        </RadioGroup>
+        <Controller
+          name="dayOfWeek"
+          control={control}
+          render={({ field }) => (
+            <RadioGroup>
+              {weeks.map((date) => (
+                <FormControlLabel
+                  key={date.key}
+                  value={date.value}
+                  control={
+                    <Radio
+                      onClick={handleClickRadio}
+                      checked={field.value === date.value}
+                    />
+                  }
+                  label={date.key}
+                />
+              ))}
+            </RadioGroup>
+          )}
+        />
         {errors.dayOfWeek && (
           <Typography color="red">{errors.dayOfWeek.message}</Typography>
         )}
@@ -76,15 +98,7 @@ const SelectDue: React.FC<SelectDueProps> = ({ type, formMethods }) => {
         placeholder="何日？"
         error={errors.date}
         type="number"
-        register={register("date", {
-          required: {
-            value: type === 3,
-            message: "毎月何日に送信するか入力してください",
-          },
-          valueAsNumber: true,
-          min: { value: 1, message: "日付は1~31を入力してください" },
-          max: { value: 31, message: "日付は1~31を入力してください" },
-        })}
+        register={monthRegister}
       />
     </>
   );
@@ -97,17 +111,14 @@ const dueTypes = [
 ];
 const getDefaultType = (
   getValues: UseFormGetValues<TaskInputType>,
-): 1 | 2 | 3 | undefined => {
-  if (getValues("isEveryday")) {
-    return 1;
-  }
-  if (getValues("dayOfWeek") !== undefined) {
+): 1 | 2 | 3 => {
+  if (getValues("dayOfWeek") !== undefined && getValues("dayOfWeek") !== null) {
     return 2;
   }
   if (getValues("date")) {
     return 3;
   }
-  return undefined;
+  return 1;
 };
 const DueTime: React.FC<TaskPanesProps> = ({
   title,
@@ -121,7 +132,7 @@ const DueTime: React.FC<TaskPanesProps> = ({
     setValue,
     resetField,
   } = formMethods;
-  const [currentType, setCurrentType] = useState<1 | 2 | 3 | undefined>(
+  const [currentType, setCurrentType] = useState<1 | 2 | 3>(
     getDefaultType(getValues),
   );
   const isTask = getValues("isTask");
@@ -209,7 +220,7 @@ const DueTime: React.FC<TaskPanesProps> = ({
           <Button onClick={() => setRouteNum(ROUTE_NUM.TASK_DETAIL)}>
             戻る
           </Button>
-          <Button type="submit">送信する</Button>
+          <Button type="submit">保存する</Button>
         </DialogActions>
       </DialogContent>
     </>

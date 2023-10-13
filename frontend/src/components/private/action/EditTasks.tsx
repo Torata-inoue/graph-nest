@@ -28,6 +28,7 @@ const EditTask: React.FC<EditTaskProps> = ({ task, userId }) => {
   };
 
   const handleClose = () => {
+    methods.reset();
     setOpen(false);
   };
 

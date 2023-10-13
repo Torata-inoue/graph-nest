@@ -2,7 +2,6 @@ import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TaskService } from './task.service';
 import { Task as TaskModel } from './models/task.model';
 import { CreateTaskInput } from './dto/createTask.input';
-import { Task } from '@prisma/client';
 import { DeleteTaskInput } from './dto/deleteTask.input';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
@@ -16,7 +15,7 @@ export class TaskResolver {
   @UseGuards(JwtAuthGuard)
   async getTasks(
     @Args('userId', { type: () => Int }) userId: number,
-  ): Promise<Task[]> {
+  ): Promise<TaskModel[]> {
     return await this.taskService.getTasks(userId);
   }
 
@@ -24,7 +23,7 @@ export class TaskResolver {
   @UseGuards(JwtAuthGuard)
   async createTask(
     @Args('createTaskInput') createTaskInput: CreateTaskInput,
-  ): Promise<Task> {
+  ): Promise<TaskModel> {
     return await this.taskService.createTask(createTaskInput);
   }
 
@@ -32,7 +31,7 @@ export class TaskResolver {
   @UseGuards(JwtAuthGuard)
   async updateTask(
     @Args('updateTaskInput') updateTaskInput: UpdateTaskInput,
-  ): Promise<Task> {
+  ): Promise<TaskModel> {
     return await this.taskService.updateTask(updateTaskInput);
   }
 
@@ -40,7 +39,7 @@ export class TaskResolver {
   @UseGuards(JwtAuthGuard)
   async deleteTask(
     @Args('deleteTaskInput') deleteTaskInput: DeleteTaskInput,
-  ): Promise<Task> {
+  ): Promise<TaskModel> {
     return await this.taskService.deleteTask(deleteTaskInput);
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { TaskService } from '../task/task.service';
 import { ChatworkService } from '../chatwork/chatwork.service';
-import { Task } from '@prisma/client';
+import { Task } from '../task/models/task.model';
 
 @Injectable()
 export class SendMessageService {
@@ -11,8 +11,7 @@ export class SendMessageService {
     private readonly chatworkService: ChatworkService,
   ) {}
 
-  // @Cron('* 30 * * * *')
-  // @Cron('1 * * * * *')
+  @Cron('0 0 * * * *')
   async handleCron(): Promise<void> {
     const now = new Date();
     const tasks = await this.taskService.getSendTasks(
@@ -22,14 +21,13 @@ export class SendMessageService {
     );
 
     tasks.map((task: Task) => {
-      const toIds = JSON.parse(task.to);
       if (task.isTask) {
         const limit = this.getLimit(task, now);
-        this.chatworkService.postTask(task.roomId, toIds, task.body, limit);
+        this.chatworkService.postTask(task.roomId, task.to, task.body, limit);
         return;
       }
 
-      this.chatworkService.postMessage(task.roomId, toIds, task.body);
+      this.chatworkService.postMessage(task.roomId, task.to, task.body);
     });
   }
 
