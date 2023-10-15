@@ -44,15 +44,14 @@ export class ChatworkService {
     const headers = {
       'X-ChatWorkToken': process.env.CHATWORK_TOKEN,
     };
+    const data = {
+      body,
+      to_ids: toIds.join(','),
+      limit,
+    };
 
     try {
-      await this.httpService
-        .post(
-          endpoint,
-          `body=${body}&limit=${limit}&to_ids=${toIds.join(',')}`,
-          { headers },
-        )
-        .toPromise();
+      await this.httpService.post(endpoint, data, { headers }).toPromise();
     } catch (error) {
       console.log(error.response);
       throw Error(error.message);
