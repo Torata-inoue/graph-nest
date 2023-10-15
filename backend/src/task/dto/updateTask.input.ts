@@ -35,20 +35,20 @@ export class UpdateTaskInput {
 
   @Field(() => Int, { nullable: true })
   @IsOptional()
-  dayOfWeek?: number;
+  dayOfWeek?: number = null;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()
-  date?: number;
+  date?: number = null;
 
   @Field(() => Int)
   roomId: number;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()
-  limitDate?: number;
+  limitDate?: number = null;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()
-  limitHour?: number;
+  limitHour?: number = null;
 }

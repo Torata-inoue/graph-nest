@@ -130,7 +130,6 @@ const DueTime: React.FC<TaskPanesProps> = ({
     formState: { errors },
     getValues,
     setValue,
-    resetField,
   } = formMethods;
   const [currentType, setCurrentType] = useState<1 | 2 | 3>(
     getDefaultType(getValues),
@@ -143,10 +142,13 @@ const DueTime: React.FC<TaskPanesProps> = ({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const value: 1 | 2 | 3 = parseInt(event.target.value);
-    resetField("isEveryday");
-    resetField("dayOfWeek");
-    resetField("date");
     setValue("isEveryday", value === 1);
+    if (value !== 2) {
+      setValue("dayOfWeek", undefined);
+    }
+    if (value !== 3) {
+      setValue("date", undefined);
+    }
     setCurrentType(value);
   };
   return (
