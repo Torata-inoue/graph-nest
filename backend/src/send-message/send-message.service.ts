@@ -12,7 +12,7 @@ export class SendMessageService {
   ) {}
 
   // @Cron('0 0 * * * *')
-  // @Cron('1 * * * * *')
+  @Cron('1 * * * * *')
   async handleCron(): Promise<void> {
     const now = new Date();
     const tasks = await this.taskService.getSendTasks(
@@ -38,6 +38,6 @@ export class SendMessageService {
       task.limitDate * 24 * 60 * 60 * 1000 +
       task.limitHour * 60 * 60 * 1000;
 
-    return Math.floor(limit) / 1000;
+    return Math.floor(limit / 1000);
   }
 }
