@@ -13,19 +13,15 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { ROUTE_NUM } from "../../../../types/routeNum.ts";
 import { TaskPanesProps } from "./TaskPaneRouter.tsx";
-import { useQuery } from "@apollo/client";
-import { GET_ROOMS } from "../../../../queries/chatworkQueries.ts";
-import { RoomType } from "../../../../types/chatwork.ts";
 import Loading from "../../Loading.tsx";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import { Controller } from "react-hook-form";
+import { useRooms } from "../../../../hooks/private/getChatRooms.ts";
 
 const SelectRoom: React.FC<TaskPanesProps> = React.memo(
   ({ title, formMethods, setRouteNum }) => {
-    const { loading, data, error } = useQuery<{ getRooms: RoomType[] }>(
-      GET_ROOMS,
-    );
+    const { loading, data, error } = useRooms();
     const { setValue, register, trigger, control } = formMethods;
     register("roomId", {
       required: { value: true, message: "投稿するルームを選択してください" },
