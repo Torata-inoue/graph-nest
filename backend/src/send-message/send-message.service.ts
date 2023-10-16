@@ -11,8 +11,7 @@ export class SendMessageService {
     private readonly chatworkService: ChatworkService,
   ) {}
 
-  // @Cron('0 0 * * * *')
-  @Cron('1 * * * * *')
+  @Cron('0 0 * * * *')
   async handleCron(): Promise<void> {
     const now = new Date();
     const tasks = await this.taskService.getSendTasks(
