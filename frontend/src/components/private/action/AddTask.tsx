@@ -8,6 +8,7 @@ import { useAddTask } from "../../../hooks/private/useAddTask.ts";
 import { useMutationApi } from "../../../hooks/useMutationApi.ts";
 import Box from "@mui/material/Box";
 import TaskPaneRouter from "./panes/TaskPaneRouter.tsx";
+import Link from "@mui/material/Link";
 
 type AddTaskProps = { userId: number };
 const AddTask: React.FC<AddTaskProps> = ({ userId }) => {
@@ -37,6 +38,16 @@ const AddTask: React.FC<AddTaskProps> = ({ userId }) => {
       <Button variant="contained" onClick={handleClickOpen} sx={{ width: 270 }}>
         タスク追加
       </Button>
+      <div style={{ textAlign: "end", paddingTop: "8px" }}>
+        <Link
+          href="https://docs.google.com/document/d/1UzgsdTeF21yOsKLrLn1T-ig0stPhlD1OLpyZbaNSq0o/edit"
+          underline="hover"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          使い方はコチラ
+        </Link>
+      </div>
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <Box component="form" onSubmit={onSubmit}>
           <TaskPaneRouter useFormMethods={methods} title="新規作成" />
