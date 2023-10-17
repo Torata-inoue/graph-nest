@@ -16,8 +16,12 @@ const Header: React.FC = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Tasks
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, fontWeight: 900 }}
+          >
+            ちゃっトラ
           </Typography>
           <Button color="inherit" onClick={handleLogout}>
             ログアウト

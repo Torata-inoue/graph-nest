@@ -42,17 +42,19 @@ export class ChatworkService {
     const endpoint = `https://api.chatwork.com/v2/rooms/${roomId}/tasks`;
 
     const headers = {
-      'X-ChatWorkToken': process.env.CHATWORK_TOKEN,
+      accept: 'application/json',
+      'content-type': 'application/x-www-form-urlencoded',
+      'x-chatworktoken': process.env.CHATWORK_TOKEN,
+    };
+    const data = {
+      body,
+      to_ids: toIds.join(','),
+      limit,
+      limit_type: 'time',
     };
 
     try {
-      await this.httpService
-        .post(
-          endpoint,
-          `body=${body}&limit=${limit}&to_ids=${toIds.join(',')}`,
-          { headers },
-        )
-        .toPromise();
+      await this.httpService.post(endpoint, data, { headers }).toPromise();
     } catch (error) {
       console.log(error.response);
       throw Error(error.message);

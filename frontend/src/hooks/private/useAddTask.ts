@@ -25,7 +25,7 @@ export const useAddTask: (userId: number) => UseFormReturn<TaskInputType> = (
       isTask: false,
       to: [],
       dueTime: 10,
-      isEveryday: false,
+      isEveryday: true,
     },
   });
 };

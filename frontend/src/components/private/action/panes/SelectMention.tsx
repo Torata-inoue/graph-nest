@@ -55,13 +55,13 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
 
       if (value === TO_ALL_ID) {
         if (isTask) {
-          setValue("to", [TO_ALL_ID]);
+          setValue(
+            "to",
+            data?.getMembers.map((member) => member.accountId) ?? [],
+          );
           return;
         }
-        setValue(
-          "to",
-          data?.getMembers.map((member) => member.accountId) ?? [],
-        );
+        setValue("to", [TO_ALL_ID]);
         return;
       }
 
