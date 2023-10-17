@@ -21,7 +21,8 @@ const getDueTime = (task: Task): string => {
     return `毎日 ${task.dueTime}時`;
   }
 
-  if (task.dayOfWeek) {
+  console.log({name: task.name, dayOfweek: task.dayOfWeek, date: task.date})
+  if (task.dayOfWeek !== null) {
     const dayOfWeek = weeks.find((date) => date.value === task.dayOfWeek)?.key;
     return `毎週 ${dayOfWeek} ${task.dueTime}時`;
   }
