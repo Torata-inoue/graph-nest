@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useSignUp } from "../../hooks/guest/useSignUp.ts";
 import { useMutationApi } from "../../hooks/useMutationApi.ts";
 import InlineTextInput from "../inputs/InlineTextInput.tsx";
+import {Link as RouterLink} from "react-router-dom";
 
 const theme = createTheme();
 
@@ -115,7 +116,7 @@ const SignUp: React.FC = () => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/signin" variant="body2">
+                <Link component={RouterLink} to="/signin">
                   サインインはこちらから
                 </Link>
               </Grid>
