@@ -37,6 +37,11 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
         variables: { roomId },
       },
     );
+    if (data?.getMembers.length === 0) {
+      setRouteNum(ROUTE_NUM.SELECT_ROOM);
+      alert("自分が入っていないルームには投稿できません");
+      return null;
+    }
 
     const handleOnChangeCheck: (
       field: ControllerRenderProps<TaskInputType, "to">,

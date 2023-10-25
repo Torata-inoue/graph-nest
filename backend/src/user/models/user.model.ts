@@ -6,7 +6,7 @@ export class User {
   id: number;
 
   @Field()
-  name: string;
+  chatworkId: string;
 
   @Field()
   email: string;

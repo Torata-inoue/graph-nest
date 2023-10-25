@@ -1,5 +1,5 @@
 export type User = {
   id: number;
-  name: string;
+  chatworkId: string;
   email: string;
 };

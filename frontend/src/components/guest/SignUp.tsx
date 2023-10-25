@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useSignUp } from "../../hooks/guest/useSignUp.ts";
 import { useMutationApi } from "../../hooks/useMutationApi.ts";
 import InlineTextInput from "../inputs/InlineTextInput.tsx";
-import {Link as RouterLink} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -70,12 +70,12 @@ const SignUp: React.FC = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <InlineTextInput
-                  placeholder="Name"
-                  error={errors.name}
-                  register={register("name", {
+                  placeholder="chatworkId"
+                  error={errors.chatworkId}
+                  register={register("chatworkId", {
                     required: {
                       value: true,
-                      message: "名前を入力してください",
+                      message: "chatworkIdを入力してください",
                     },
                   })}
                 />

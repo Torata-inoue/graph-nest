@@ -5,7 +5,7 @@ import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 export class CreateUserInput {
   @Field()
   @IsNotEmpty()
-  name: string;
+  chatworkId: string;
 
   @Field()
   @IsEmail()
