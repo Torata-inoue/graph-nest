@@ -1,14 +1,7 @@
 import React from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import {
-  Chip,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
+import { Autocomplete, FormControl, FormLabel } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { ROUTE_NUM } from "../../../../types/routeNum.ts";
@@ -18,23 +11,17 @@ import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import { Controller } from "react-hook-form";
 import { useRooms } from "../../../../hooks/private/getChatRooms.ts";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 const SelectRoom: React.FC<TaskPanesProps> = React.memo(
   ({ title, formMethods, setRouteNum }) => {
     const { loading, data, error } = useRooms();
-    const { setValue, register, trigger, control } = formMethods;
+    const { setValue, register, trigger, control, resetField } = formMethods;
     register("roomId", {
       required: { value: true, message: "投稿するルームを選択してください" },
       min: { value: 1, message: "投稿するルームを選択してください" },
     });
-
-    const handleClickRadio: React.MouseEventHandler<HTMLButtonElement> = (
-      event,
-    ) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      setValue("roomId", parseInt(event.target.value));
-    };
 
     const handleClickNext = async () => {
       const isValid = await trigger("roomId");
@@ -53,33 +40,43 @@ const SelectRoom: React.FC<TaskPanesProps> = React.memo(
             <FormLabel>投稿するチャットルームを選択</FormLabel>
             {loading && <Loading />}
             {error && <Typography color="red">エラーが発生しました</Typography>}
-            {!loading && !error && (
+            {!loading && !error && data && (
               <Controller
-                name="roomId"
                 control={control}
+                name="roomId"
                 render={({ field }) => (
-                  <RadioGroup>
-                    {data?.getRooms.map((room) => (
-                      <FormControlLabel
-                        key={room.roomId}
-                        value={room.roomId}
-                        control={
-                          <Radio
-                            onClick={handleClickRadio}
-                            checked={field.value === room.roomId}
-                          />
-                        }
-                        label={
-                          <Chip
-                            avatar={
-                              <Avatar alt={room.name} src={room.iconPath} />
-                            }
-                            label={room.name}
-                          />
-                        }
-                      />
-                    ))}
-                  </RadioGroup>
+                  <Autocomplete
+                    value={
+                      data.getRooms.find(
+                        (room) => room.roomId === field.value,
+                      ) || null
+                    }
+                    onChange={(_, newValue) =>
+                      newValue
+                        ? setValue("roomId", newValue.roomId)
+                        : resetField("roomId")
+                    }
+                    options={data.getRooms}
+                    getOptionLabel={(room) => room.name}
+                    renderOption={(props, room) => (
+                      <Box
+                        component="li"
+                        sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                        {...props}
+                      >
+                        <Avatar
+                          src={room.iconPath}
+                          alt={room.name}
+                          sx={{ width: 24, height: 24, mr: 1 }}
+                        />
+                        {room.name}
+                      </Box>
+                    )}
+                    sx={{ width: 500, mt: 2 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="ルームを選択" />
+                    )}
+                  />
                 )}
               />
             )}

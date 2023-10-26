@@ -1,28 +1,30 @@
 import React from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import {
-  Checkbox,
-  Chip,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormLabel,
-} from "@mui/material";
+import { Autocomplete, Checkbox, FormControl, FormLabel } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { TaskPanesProps } from "./TaskPaneRouter.tsx";
 import { ROUTE_NUM } from "../../../../types/routeNum.ts";
 import { useQuery } from "@apollo/client";
 import { MemberType } from "../../../../types/chatwork.ts";
-import { Controller, ControllerRenderProps, useWatch } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import Loading from "../../Loading.tsx";
 import Typography from "@mui/material/Typography";
 import { GET_MEMBERS } from "../../../../queries/chatworkQueries.ts";
 import Avatar from "@mui/material/Avatar";
-import { TaskInputType } from "../../../../hooks/private/useAddTask.ts";
+import TextField from "@mui/material/TextField";
 
-const TO_ALL_ID = -1;
+const TO_ALL: MemberType = {
+  accountId: -1,
+  avatarImageUrl: "",
+  chatworkId: "",
+  department: "",
+  name: "全員(TO ALL)",
+  organizationId: 0,
+  organizationName: "",
+  role: "member",
+};
 const SelectMention: React.FC<TaskPanesProps> = React.memo(
   ({ title, setRouteNum, formMethods }) => {
     const { control, trigger, register, setValue, getValues } = formMethods;
@@ -30,7 +32,6 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
     register("to", {
       required: { value: true, message: "投稿するルームを選択してください" },
     });
-    const isTask = getValues("isTask");
     const { loading, data, error } = useQuery<{ getMembers: MemberType[] }>(
       GET_MEMBERS,
       {
@@ -42,36 +43,6 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
       alert("自分が入っていないルームには投稿できません");
       return null;
     }
-
-    const handleOnChangeCheck: (
-      field: ControllerRenderProps<TaskInputType, "to">,
-    ) => (
-      event: React.ChangeEvent<HTMLInputElement>,
-      checked: boolean,
-    ) => void = (field) => (event, checked) => {
-      const value = parseInt(event.target.value);
-      if (!checked) {
-        setValue(
-          "to",
-          field.value.filter((val) => val !== value),
-        );
-        return;
-      }
-
-      if (value === TO_ALL_ID) {
-        if (isTask) {
-          setValue(
-            "to",
-            data?.getMembers.map((member) => member.accountId) ?? [],
-          );
-          return;
-        }
-        setValue("to", [TO_ALL_ID]);
-        return;
-      }
-
-      setValue("to", [...field.value, value]);
-    };
 
     const handleClickNext = async () => {
       const isValid = await trigger("to");
@@ -89,47 +60,59 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
             <FormLabel>toをつける相手を選択</FormLabel>
             {loading && <Loading />}
             {error && <Typography color="red">エラーが発生しました</Typography>}
-            {!loading && !error && (
+            {!loading && !error && data && (
               <Controller
                 name="to"
                 control={control}
                 render={({ field }) => (
-                  <FormGroup>
-                    <FormControlLabel
-                      value={TO_ALL_ID}
-                      control={
-                        <Checkbox
-                          onChange={handleOnChangeCheck(field)}
-                          checked={field.value.includes(TO_ALL_ID)}
-                        />
+                  <Autocomplete
+                    multiple
+                    value={[TO_ALL, ...data.getMembers].filter((member) =>
+                      field.value.includes(member.accountId),
+                    )}
+                    onChange={(_, newValue) => {
+                      if (newValue.includes(TO_ALL)) {
+                        setValue(
+                          "to",
+                          getValues("isTask")
+                            ? data.getMembers.map((member) => member.accountId)
+                            : [TO_ALL.accountId],
+                        );
+                        return;
                       }
-                      label={isTask ? "全員選択" : "TO ALL"}
-                    />
-                    {data?.getMembers.map((member) => (
-                      <FormControlLabel
-                        key={member.accountId}
-                        value={member.accountId}
-                        control={
-                          <Checkbox
-                            onChange={handleOnChangeCheck(field)}
-                            checked={field.value.includes(member.accountId)}
-                            disabled={field.value.includes(TO_ALL_ID)}
+                      setValue(
+                        "to",
+                        newValue.map((member) => member.accountId),
+                      );
+                    }}
+                    options={[TO_ALL, ...data.getMembers]}
+                    disableCloseOnSelect
+                    getOptionLabel={(member) => member.name}
+                    getOptionDisabled={(member) =>
+                      member.accountId !== TO_ALL.accountId &&
+                      field.value.includes(TO_ALL.accountId)
+                    }
+                    renderOption={(props, member, { selected }) => (
+                      <li {...props}>
+                        <Checkbox
+                          style={{ marginRight: 8 }}
+                          checked={selected}
+                        />
+                        {member.avatarImageUrl && (
+                          <Avatar
+                            src={member.avatarImageUrl}
+                            alt={member.name}
+                            sx={{ width: 24, height: 24, mr: 1 }}
                           />
-                        }
-                        label={
-                          <Chip
-                            avatar={
-                              <Avatar
-                                alt={member.name}
-                                src={member.avatarImageUrl}
-                              />
-                            }
-                            label={member.name}
-                          />
-                        }
-                      />
-                    ))}
-                  </FormGroup>
+                        )}
+                        {member.name}
+                      </li>
+                    )}
+                    sx={{ width: 500, mt: 2 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="toをつける相手を選択" />
+                    )}
+                  />
                 )}
               />
             )}
