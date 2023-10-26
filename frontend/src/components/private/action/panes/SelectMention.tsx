@@ -1,7 +1,7 @@
 import React from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import { Autocomplete, Checkbox, FormControl, FormLabel } from "@mui/material";
+import {Autocomplete, Checkbox, Chip, FormControl, FormLabel} from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { TaskPanesProps } from "./TaskPaneRouter.tsx";
@@ -108,6 +108,15 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
                         {member.name}
                       </li>
                     )}
+                    renderTags={(members, getTagProps) =>
+                      members.map((member, index) => (
+                        <Chip
+                          avatar={member.avatarImageUrl ? <Avatar src={member.avatarImageUrl} /> : undefined}
+                          label={member.name}
+                          {...getTagProps({ index })}
+                        />
+                      ))
+                    }
                     sx={{ width: 500, mt: 2 }}
                     renderInput={(params) => (
                       <TextField {...params} label="toをつける相手を選択" />
