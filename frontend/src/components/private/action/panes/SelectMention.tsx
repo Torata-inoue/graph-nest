@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import {Autocomplete, Checkbox, Chip, FormControl, FormLabel} from "@mui/material";
@@ -38,6 +38,16 @@ const SelectMention: React.FC<TaskPanesProps> = React.memo(
         variables: { roomId },
       },
     );
+
+    useEffect(() => {
+      if (loading || error || !data) {
+        return;
+      }
+      if (getValues('isTask') && getValues('to')[0] === TO_ALL.accountId) {
+        setValue('to', data.getMembers.map(member => member.accountId))
+      }
+    }, [loading, error, data, getValues, setValue])
+
     if (data?.getMembers.length === 0) {
       setRouteNum(ROUTE_NUM.SELECT_ROOM);
       alert("自分が入っていないルームには投稿できません");
