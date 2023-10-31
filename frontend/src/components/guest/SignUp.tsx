@@ -70,12 +70,12 @@ const SignUp: React.FC = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <InlineTextInput
-                  placeholder="chatworkId"
+                  placeholder="Chatwork アカウントID"
                   error={errors.chatworkId}
                   register={register("chatworkId", {
                     required: {
                       value: true,
-                      message: "chatworkIdを入力してください",
+                      message: "Chatwork アカウントIDを入力してください",
                     },
                   })}
                 />
