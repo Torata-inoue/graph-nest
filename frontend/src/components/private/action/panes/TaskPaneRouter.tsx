@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import TaskOrMessage from "./TaskOrMessage.tsx";
 import SelectRoom from "./SelectRoom.tsx";
@@ -7,7 +7,7 @@ import TaskDetail from "./TaskDetail.tsx";
 import DueTime from "./DueTime.tsx";
 import { TaskInputType } from "../../../../hooks/private/useAddTask.ts";
 import { ROUTE_NUM } from "../../../../types/routeNum.ts";
-import {Breakpoint} from "@mui/material";
+import { Breakpoint } from "@mui/material";
 
 export type TaskPanesProps = {
   title: string;
@@ -18,20 +18,20 @@ type TaskPaneRouterProps = {
   defaultRouteNum?: number;
   useFormMethods: UseFormReturn<TaskInputType>;
   title: string;
-  setDialogWidth: (width: Breakpoint) => void
+  setDialogWidth: (width: Breakpoint) => void;
 };
 const TaskPaneRouter: React.FC<TaskPaneRouterProps> = ({
   defaultRouteNum = ROUTE_NUM.TASK_OR_MESSAGE,
   useFormMethods,
   title,
-  setDialogWidth
+  setDialogWidth,
 }) => {
   const [routeNum, setRouteNum] = useState(defaultRouteNum);
   useEffect(() => {
     if (routeNum === ROUTE_NUM.TASK_DETAIL) {
-      setDialogWidth('lg')
+      setDialogWidth("lg");
     } else {
-      setDialogWidth('sm')
+      setDialogWidth("sm");
     }
   }, [routeNum, setDialogWidth]);
   if (routeNum === ROUTE_NUM.TASK_OR_MESSAGE) {

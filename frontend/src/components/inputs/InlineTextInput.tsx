@@ -14,7 +14,7 @@ const InlineTextInput: React.FC<InlineTextInputProps> = ({
   error,
   register,
   type = "text",
-  width= '100%'
+  width = "100%",
 }) => {
   return (
     <TextField
@@ -25,7 +25,7 @@ const InlineTextInput: React.FC<InlineTextInputProps> = ({
       error={Boolean(error)}
       helperText={error?.message}
       type={type}
-      sx={{width}}
+      sx={{ width }}
       {...register}
     />
   );
