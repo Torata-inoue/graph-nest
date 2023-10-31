@@ -79,6 +79,11 @@ const SignUp: React.FC = () => {
                     },
                   })}
                 />
+                <Typography color="red" variant="body2">
+                  アカウントIDは
+                  <a href="https://docs.google.com/document/d/1UzgsdTeF21yOsKLrLn1T-ig0stPhlD1OLpyZbaNSq0o/edit#heading=h.82cl5s12kodb" target="_blank">ドキュメント</a>
+                  を参考に正確な値を入力してください
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <InlineTextInput
