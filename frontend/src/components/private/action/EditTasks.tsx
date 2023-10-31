@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
-import { IconButton, Tooltip } from "@mui/material";
+import {Breakpoint, IconButton, Tooltip} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Task } from "../../../types/task.ts";
 import { UPDATE_TASK } from "../../../mutations/taskMutation.ts";
@@ -13,6 +13,7 @@ import TaskPaneRouter from "./panes/TaskPaneRouter.tsx";
 type EditTaskProps = { task: Task; userId: number };
 const EditTask: React.FC<EditTaskProps> = ({ task, userId }) => {
   const [open, setOpen] = useState(false);
+  const [dialogWidth, setDialogWidth] = useState<Breakpoint>('sm');
   const methods = useEditTask(task);
   const updateTask = useMutationApi<{ updateTask: Task }>(UPDATE_TASK);
 
@@ -39,11 +40,12 @@ const EditTask: React.FC<EditTaskProps> = ({ task, userId }) => {
           <EditIcon />
         </IconButton>
       </Tooltip>
-      <Dialog fullWidth={true} maxWidth="sm" open={open} onClose={handleClose}>
+      <Dialog fullWidth maxWidth={dialogWidth} open={open} onClose={handleClose}>
         <Box component="form" onSubmit={onSubmit}>
           <TaskPaneRouter
             useFormMethods={methods}
             title={`${task.name}の編集`}
+            setDialogWidth={setDialogWidth}
           />
         </Box>
       </Dialog>

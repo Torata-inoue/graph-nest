@@ -9,10 +9,12 @@ import { useMutationApi } from "../../../hooks/useMutationApi.ts";
 import Box from "@mui/material/Box";
 import TaskPaneRouter from "./panes/TaskPaneRouter.tsx";
 import Link from "@mui/material/Link";
+import {Breakpoint} from "@mui/material";
 
 type AddTaskProps = { userId: number };
 const AddTask: React.FC<AddTaskProps> = ({ userId }) => {
   const [open, setOpen] = useState(false);
+  const [dialogWidth, setDialogWidth] = useState<Breakpoint>('sm');
   const methods = useAddTask(userId);
   const createTask = useMutationApi<{ createTask: Task }>(CREATE_TASK);
 
@@ -48,9 +50,9 @@ const AddTask: React.FC<AddTaskProps> = ({ userId }) => {
           使い方はコチラ
         </Link>
       </div>
-      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+      <Dialog open={open} onClose={handleClose} maxWidth={dialogWidth} fullWidth>
         <Box component="form" onSubmit={onSubmit}>
-          <TaskPaneRouter useFormMethods={methods} title="新規作成" />
+          <TaskPaneRouter useFormMethods={methods} title="新規作成" setDialogWidth={setDialogWidth} />
         </Box>
       </Dialog>
     </div>
