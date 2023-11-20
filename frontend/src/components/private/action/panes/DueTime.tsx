@@ -99,6 +99,7 @@ const SelectDue: React.FC<SelectDueProps> = ({ type, formMethods }) => {
         error={errors.date}
         type="number"
         register={monthRegister}
+        width="20%"
       />
     </>
   );
@@ -178,6 +179,7 @@ const DueTime: React.FC<TaskPanesProps> = ({
             placeholder="実行時間(時)"
             error={errors.name}
             type="number"
+            width="20%"
             register={register("dueTime", {
               valueAsNumber: true,
               required: { value: true, message: "実行時間を入力してください" },
@@ -193,6 +195,7 @@ const DueTime: React.FC<TaskPanesProps> = ({
                 placeholder="日後"
                 error={errors.limitDate}
                 type="number"
+                width="20%"
                 register={register("limitDate", {
                   valueAsNumber: true,
                   required: {
@@ -205,6 +208,7 @@ const DueTime: React.FC<TaskPanesProps> = ({
                 placeholder="時間後"
                 error={errors.limitHour}
                 type="number"
+                width="20%"
                 register={register("limitHour", {
                   valueAsNumber: true,
                   required: {

@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useSignUp } from "../../hooks/guest/useSignUp.ts";
 import { useMutationApi } from "../../hooks/useMutationApi.ts";
 import InlineTextInput from "../inputs/InlineTextInput.tsx";
+import { Link as RouterLink } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -69,15 +70,25 @@ const SignUp: React.FC = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <InlineTextInput
-                  placeholder="Name"
-                  error={errors.name}
-                  register={register("name", {
+                  placeholder="Chatwork アカウントID"
+                  error={errors.chatworkId}
+                  register={register("chatworkId", {
                     required: {
                       value: true,
-                      message: "名前を入力してください",
+                      message: "Chatwork アカウントIDを入力してください",
                     },
                   })}
                 />
+                <Typography color="red" variant="body2">
+                  アカウントIDは
+                  <a
+                    href="https://docs.google.com/document/d/1UzgsdTeF21yOsKLrLn1T-ig0stPhlD1OLpyZbaNSq0o/edit#heading=h.82cl5s12kodb"
+                    target="_blank"
+                  >
+                    ドキュメント
+                  </a>
+                  を参考に正確な値を入力してください
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <InlineTextInput
@@ -115,7 +126,7 @@ const SignUp: React.FC = () => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/signin" variant="body2">
+                <Link component={RouterLink} to="/signin">
                   サインインはこちらから
                 </Link>
               </Grid>

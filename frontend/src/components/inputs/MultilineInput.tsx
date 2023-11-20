@@ -19,7 +19,7 @@ const MultilineInput: React.FC<MultilineTextInputProps> = ({
       label={placeholder}
       fullWidth
       multiline
-      rows={4}
+      rows={15}
       error={Boolean(error)}
       helperText={error?.message}
       {...register}

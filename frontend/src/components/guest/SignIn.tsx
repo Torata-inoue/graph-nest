@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { SignInResponse } from "../../types/signInResponse.ts";
 import { SIGN_IN } from "../../mutations/authMutations.ts";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSignIn } from "../../hooks/guest/useSignIn.ts";
 import { useMutationApi } from "../../hooks/useMutationApi.ts";
 import InlineTextInput from "../inputs/InlineTextInput.tsx";
@@ -88,7 +88,7 @@ const SignIn: React.FC = () => {
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="/signup" variant="body2">
+                <Link component={RouterLink} to="/signup">
                   新規作成はこちらから
                 </Link>
               </Grid>

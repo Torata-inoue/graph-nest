@@ -4,6 +4,8 @@ import { RoomModel } from './models/room.model';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { MemberModel } from './models/member.model';
+import { GetUser } from '../decorators/user.decorator';
+import { User } from '@prisma/client';
 
 @Resolver()
 export class ChatworkResolver {
@@ -15,11 +17,16 @@ export class ChatworkResolver {
     return await this.chatworkService.getRooms();
   }
 
-  @Query(() => [MemberModel!]!)
+  @Query(() => [MemberModel]!)
   @UseGuards(JwtAuthGuard)
   async getMembers(
     @Args('roomId', { type: () => Int }) roomId: number,
+    @GetUser() user: User,
   ): Promise<MemberModel[]> {
-    return await this.chatworkService.getRoomMembers(roomId);
+    const members = await this.chatworkService.getRoomMembers(roomId);
+    const isInclude = members.find(
+      (member) => member.account_id === parseInt(user.chatworkId),
+    );
+    return isInclude ? members : [];
   }
 }
