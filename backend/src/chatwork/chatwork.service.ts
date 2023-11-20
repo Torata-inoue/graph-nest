@@ -17,7 +17,7 @@ export class ChatworkService {
     const to =
       toIds[0] === -1
         ? '[toall]\n'
-        : toIds.map((id) => `[To:${id}]\n`).join('\n');
+        : toIds.map((id) => `[To:${id}]`).join('\n');
 
     const headers = {
       'X-ChatWorkToken': process.env.CHATWORK_TOKEN,
