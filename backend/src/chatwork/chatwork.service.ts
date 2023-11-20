@@ -15,9 +15,7 @@ export class ChatworkService {
   ): Promise<void> {
     const endpoint = `https://api.chatwork.com/v2/rooms/${roomId}/messages`;
     const to =
-      toIds[0] === -1
-        ? '[toall]\n'
-        : toIds.map((id) => `[To:${id}]`).join('\n');
+      toIds[0] === -1 ? '[toall]' : toIds.map((id) => `[To:${id}]`).join('\n');
 
     const headers = {
       'X-ChatWorkToken': process.env.CHATWORK_TOKEN,
@@ -25,7 +23,7 @@ export class ChatworkService {
 
     try {
       await this.httpService
-        .post(endpoint, `body=${to}${body}`, { headers })
+        .post(endpoint, `body=${to}\n${body}`, { headers })
         .toPromise();
     } catch (error) {
       console.log(error.response);
